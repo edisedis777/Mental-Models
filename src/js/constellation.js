@@ -24,61 +24,61 @@ class ConstellationVisualization {
                 symbol: 'phoenix',
                 color: 0xff6b35,
                 constellationPattern: 'phoenix',
-                position: { x: 0, y: 20, z: 0 }
+                position: { x: 0, y: 30, z: 0 }
             },
             'Human Nature and Judgment': {
                 symbol: 'owl',
                 color: 0x9b59b6,
                 constellationPattern: 'owl',
-                position: { x: -25, y: 0, z: 10 }
+                position: { x: -35, y: 0, z: 15 }
             },
             'Numeracy and Interpretation': {
                 symbol: 'fox',
                 color: 0xe67e22,
                 constellationPattern: 'fox',
-                position: { x: 25, y: 0, z: 10 }
+                position: { x: 35, y: 0, z: 15 }
             },
             'Thinking': {
                 symbol: 'dolphin',
                 color: 0x3498db,
                 constellationPattern: 'dolphin',
-                position: { x: 0, y: -20, z: 10 }
+                position: { x: 0, y: -30, z: 15 }
             },
             'Systems': {
                 symbol: 'spider',
                 color: 0x2ecc71,
                 constellationPattern: 'spider',
-                position: { x: -30, y: 10, z: -10 }
+                position: { x: -40, y: 15, z: -15 }
             },
             'Biological World': {
                 symbol: 'tree',
                 color: 0x27ae60,
                 constellationPattern: 'tree',
-                position: { x: 30, y: 10, z: -10 }
+                position: { x: 40, y: 15, z: -15 }
             },
             'Physical World': {
                 symbol: 'dragon',
                 color: 0xe74c3c,
                 constellationPattern: 'dragon',
-                position: { x: 0, y: 25, z: -15 }
+                position: { x: 0, y: 35, z: -20 }
             },
             'Military and War': {
                 symbol: 'wolf',
                 color: 0xff0000,
                 constellationPattern: 'wolf',
-                position: { x: -20, y: -15, z: -10 }
+                position: { x: -30, y: -20, z: -15 }
             },
             'Political Failure': {
                 symbol: 'chameleon',
                 color: 0xf39c12,
                 constellationPattern: 'chameleon',
-                position: { x: 20, y: -15, z: -10 }
+                position: { x: 30, y: -20, z: -15 }
             },
             'Rule of Law': {
                 symbol: 'scales',
                 color: 0xf1c40f,
                 constellationPattern: 'scales',
-                position: { x: 0, y: 0, z: -20 }
+                position: { x: 0, y: 0, z: -30 }
             }
         };
         
@@ -377,7 +377,7 @@ class ConstellationVisualization {
      */
     createStar(model, config, index, total) {
         // Create star geometry
-        const geometry = new THREE.SphereGeometry(0.5, 8, 8);
+        const geometry = new THREE.SphereGeometry(0.8, 16, 16);
         
         // Create material with category color
         const material = new THREE.MeshPhongMaterial({
@@ -392,18 +392,18 @@ class ConstellationVisualization {
         
         // Position star in a circle around the constellation pattern
         const angle = (index / total) * Math.PI * 2;
-        const radius = 12 + Math.random() * 3;
+        const radius = 15 + Math.random() * 5;
         star.position.set(
             Math.cos(angle) * radius,
             Math.sin(angle) * radius,
-            (Math.random() - 0.5) * 5
+            (Math.random() - 0.5) * 8
         );
 
         // Store model data in star
         star.userData = model;
 
         // Add glow effect
-        const glowGeometry = new THREE.SphereGeometry(0.8, 8, 8);
+        const glowGeometry = new THREE.SphereGeometry(1.2, 16, 16);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: config.color,
             transparent: true,
