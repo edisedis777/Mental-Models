@@ -59,9 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
      * In a real implementation, this would fetch from the actual file
      */
     async function loadMarkdownData() {
-        // For demo purposes, we'll include a small sample
-        // In production, you would fetch from 'src/data/mental-models.md'
-        
         try {
             // Try to fetch from the actual file first
             const response = await fetch('src/data/mental-models.md');
@@ -72,38 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Could not load markdown file, using sample data:', error);
         }
         
-        // Fallback sample data
-        return `
-Mental models in economics and strategy
-Opportunity cost
-The value of what you have to give up to choose something else.
-Creative destruction
-A theory of economic innovation where new production units replace outdated ones.
-Supply and demand
-The main model of price determination in economic theory, explaining how prices settle at equilibrium.
-
-Mental models in human nature and judgment
-Trust
-A fundamental part of human nature that produces increased speed, efficiency, and decreased costs.
-Availability heuristic
-The tendency to judge the frequency of events by the ease with which examples come to mind.
-Confirmation bias
-The tendency to interpret situations or seek evidence that confirms pre-existing beliefs.
-
-Mental models in thinking
-First principles
-The basic assumptions that can't be deduced any further in a specific field.
-Second-order thinking
-Thinking in terms of effects and the effects of those effects.
-Occam's razor
-The idea of preferring the theory with the fewest assumptions when all else is equal.
-
-Mental models in systems
-Network effects
-The value of a network is driven by the number of users, sometimes turning into a winner-take-all scenario.
-Feedback loops
-When the outcome of a system amplifies and reinforces the system itself in either a positive or negative fashion.
-        `;
+        return '';
     }
 
     /**
@@ -177,6 +143,13 @@ When the outcome of a system amplifies and reinforces the system itself in eithe
     function addGlobalEventListeners() {
         document.addEventListener('keydown', handleKeyboardShortcuts);
         
+        // Listen for star selection events from constellation
+        document.addEventListener('starSelected', (e) => {
+            if (searchManager) {
+                searchManager.showModelDetails(e.detail);
+            }
+        });
+
         // Handle window resize
         let resizeTimeout;
         window.addEventListener('resize', () => {

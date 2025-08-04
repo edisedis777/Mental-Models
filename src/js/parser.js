@@ -25,22 +25,27 @@ class MentalModelsParser {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
             
-            // Skip empty lines and separator lines
-            if (!line || line.startsWith('|---') || line.startsWith('**|')) {
+            if (!line) {
                 continue;
             }
             
             // Check for category headers
-            if (this.isCategoryHeader(line)) {
-                this.currentCategory = this.extractCategoryName(line);
+            if (line.startsWith('## ')) {
+                this.currentCategory = line.substring(3).trim();
                 this.categories[this.currentCategory] = [];
                 continue;
             }
             
-            // Parse table rows
-            if (line.startsWith('|') && this.currentCategory) {
-                const model = this.parseTableRow(line);
-                if (model) {
+            // Parse model and description
+            if (this.currentCategory && line.startsWith('*   **')) {
+                const parts = line.substring(7).split(':**');
+                if (parts.length === 2) {
+                    const model = {
+                        name: parts[0].trim(),
+                        description: parts[1].trim(),
+                        id: this.generateId(parts[0].trim()),
+                        category: this.currentCategory
+                    };
                     this.categories[this.currentCategory].push(model);
                 }
             }

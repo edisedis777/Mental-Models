@@ -93,7 +93,7 @@ class SearchManager {
 
         // Show all button
         this.showAllButton.addEventListener('click', () => {
-            this.showAllCategories();
+            this.toggleAllCategories();
         });
 
         // Listen for star selection events from constellation
@@ -137,9 +137,9 @@ class SearchManager {
      * Handle category filter change
      * @param {Event} event - Change event
      */
-    handleCategoryFilter(event) {
-        const category = event.target.value;
-        const isChecked = event.target.checked;
+    handleCategoryFilter(target) {
+        const category = target.value;
+        const isChecked = target.checked;
         
         if (isChecked) {
             this.activeFilters.add(category);
@@ -157,13 +157,19 @@ class SearchManager {
     /**
      * Show all categories
      */
-    showAllCategories() {
+    toggleAllCategories() {
         const checkboxes = this.categoryFiltersContainer.querySelectorAll('input[type="checkbox"]');
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
         checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-            this.activeFilters.add(checkbox.value);
+            checkbox.checked = !allChecked;
+            if (checkbox.checked) {
+                this.activeFilters.add(checkbox.value);
+            } else {
+                this.activeFilters.delete(checkbox.value);
+            }
         });
-        
+
         this.constellation.filterByCategory(Array.from(this.activeFilters));
         this.updateShowAllButtonState();
     }

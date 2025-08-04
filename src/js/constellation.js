@@ -64,7 +64,7 @@ class ConstellationVisualization {
             },
             'Military and War': {
                 symbol: 'wolf',
-                color: 0x34495e,
+                color: 0xff0000,
                 constellationPattern: 'wolf',
                 position: { x: -20, y: -15, z: -10 }
             },
@@ -456,8 +456,8 @@ class ConstellationVisualization {
         this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
         if (this.controls.isMouseDown) {
-            this.controls.targetRotationY = (event.clientX - this.controls.mouseX) * 0.01;
-            this.controls.targetRotationX = (event.clientY - this.controls.mouseY) * 0.01;
+            this.controls.targetRotationY += (event.clientX - this.controls.mouseX) * 0.001;
+            this.controls.targetRotationX += (event.clientY - this.controls.mouseY) * 0.001;
         }
 
         this.controls.mouseX = event.clientX;
