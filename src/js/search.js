@@ -24,6 +24,7 @@ class SearchManager {
     init() {
         this.createCategoryFilters();
         this.addEventListeners();
+        this.addModalCloseListener();
         this.showAllCategories();
     }
 
@@ -405,13 +406,6 @@ class SearchManager {
     }
 }
 
-// Initialize modal close listener when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    const searchManager = window.searchManager;
-    if (searchManager) {
-        searchManager.addModalCloseListener();
-    }
-});
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
