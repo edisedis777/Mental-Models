@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function loadMarkdownData() {
         // For demo purposes, we'll include a small sample
-        // In production, you would fetch from 'src/data/mental-models-table.md'
+        // In production, you would fetch from 'src/data/mental-models.md'
         
         try {
             // Try to fetch from the actual file first
-            const response = await fetch('src/data/mental-models-table.md');
+            const response = await fetch('src/data/mental-models.md');
             if (response.ok) {
                 return await response.text();
             }
