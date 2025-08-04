@@ -1,0 +1,177 @@
+/* Constellation-specific Styles */
+
+.constellation-container canvas {
+    display: block;
+    cursor: grab;
+}
+
+.constellation-container canvas:active {
+    cursor: grabbing;
+}
+
+/* Star hover effects */
+.constellation-star {
+    transition: all 0.3s ease;
+}
+
+.constellation-star:hover {
+    filter: brightness(1.5);
+}
+
+/* Category legend */
+.category-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(20, 20, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    z-index: 50;
+}
+
+.legend-title {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #ecf0f1;
+    font-weight: bold;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    color: #bdc3c7;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.legend-symbol {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: #95a5a6;
+}
+
+/* Tooltip for star information */
+.star-tooltip {
+    position: absolute;
+    background: rgba(20, 20, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    pointer-events: none;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.star-tooltip.show {
+    opacity: 1;
+}
+
+.tooltip-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3498db;
+}
+
+.tooltip-category {
+    font-size: 0.8rem;
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+/* Animation for constellation appearance */
+@keyframes constellationAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.constellation-group {
+    animation: constellationAppear 1s ease-out;
+}
+
+/* Search highlight animation */
+@keyframes searchHighlight {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.3);
+        filter: brightness(2);
+    }
+}
+
+.search-highlight {
+    animation: searchHighlight 1s ease-in-out infinite;
+}
+
+/* Loading overlay for constellation */
+.constellation-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.constellation-loading-text {
+    color: #bdc3c7;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.constellation-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments for constellation */
+@media (max-width: 768px) {
+    .category-legend {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px;
+    }
+    
+    .legend-title {
+        font-size: 0.8rem;
+    }
+    
+    .legend-item {
+        font-size: 0.7rem;
+    }
+    
+    .star-tooltip {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+}
