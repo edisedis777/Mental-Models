@@ -1,6 +1,6 @@
-# Mental Models Constellation
+# Mental Models Constellation *In Development*
 
-![Constellation Visualization](https://img.shields.io/badge/Visualization-Three.js-blue) ![Interactive](https://img.shields.io/badge/Interactive-Yes-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
+![Constellation Visualization](https://img.shields.io/badge/Visualization-Three.js-blue) ![Interactive](https://img.shields.io/badge/Interactive-Yes-green)
 
 An interactive constellation visualization that transforms mental models into a celestial map, where each category becomes a unique constellation symbol and individual mental models shine as stars within their celestial groupings.
 
