@@ -1,0 +1,90 @@
+{
+  "name": "mental-models-constellation",
+  "version": "1.0.0",
+  "description": "An interactive constellation visualization of mental models using Three.js",
+  "main": "src/js/main.js",
+  "scripts": {
+    "start": "live-server --port=8080 --host=localhost --no-browser",
+    "build": "mkdir -p dist && cp -r src/* dist/",
+    "dev": "live-server --port=8080 --host=localhost --open=/src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/js/",
+    "format": "prettier --write src/**/*.{js,css,html}",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "keywords": [
+    "mental-models",
+    "visualization",
+    "three.js",
+    "constellation",
+    "interactive",
+    "education",
+    "psychology",
+    "decision-making"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/mental-models-constellation.git"
+  },
+  "homepage": "https://your-username.github.io/mental-models-constellation",
+  "bugs": {
+    "url": "https://github.com/your-username/mental-models-constellation/issues"
+  },
+  "dependencies": {
+    "three": "^0.128.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "eslint": "^7.32.0",
+    "prettier": "^2.4.1",
+    "gh-pages": "^3.2.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-console": "warn",
+      "no-unused-vars": "warn"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "printWidth": 100
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
