@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Models Constellation</title>
+    <meta name="description" content="An interactive constellation visualization of mental models">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/constellation.css">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="app-title">Mental Models Constellation</h1>
+            <p class="app-subtitle">Explore the universe of thinking frameworks</p>
+        </header>
+        
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Search mental models...">
+                <button id="search-button" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="filter-container">
+                <h3 class="filter-title">Filter by Category:</h3>
+                <div class="category-filters" id="category-filters">
+                    <!-- Category filters will be dynamically added here -->
+                </div>
+                <button id="show-all-button" class="show-all-button">Show All</button>
+            </div>
+            
+            <div class="info-container">
+                <div class="info-item">
+                    <i class="fas fa-mouse"></i>
+                    <span>Drag to rotate</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Scroll to zoom</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>Click stars for details</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Constellation Container -->
+        <div class="constellation-container" id="constellation-container">
+            <!-- Three.js canvas will be inserted here -->
+        </div>
+        
+        <!-- Mental Model Detail Modal -->
+        <div class="modal" id="model-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title" class="modal-title"></h2>
+                    <span class="modal-close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-description" class="modal-description"></p>
+                    <div class="modal-category">
+                        <span class="category-label">Category:</span>
+                        <span id="modal-category" class="category-value"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div class="loading-container" id="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Creating constellation...</p>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Mental Models Constellation • Created with Three.js</p>
+        </footer>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/parser.js"></script>
+    <script src="js/constellation.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
