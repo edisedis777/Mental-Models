@@ -41,7 +41,7 @@ class ConstellationVisualization {
                 position: { x: -40, y: 15, z: -15 }
             },
             'Biological World': {
-                color: 0x27ae60,
+                color: 0x1abc9c, // Turquoise
                 position: { x: 40, y: 15, z: -15 }
             },
             'Physical World': {
@@ -325,7 +325,8 @@ class ConstellationVisualization {
                 star = star.parent;
             }
 
-            if (star.userData.name) {
+            // Check if the star and its parent constellation are visible
+            if (star.userData.name && star.parent && star.parent.visible) {
                 this.selectStar(star);
             }
         }

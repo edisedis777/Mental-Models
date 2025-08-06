@@ -38,7 +38,7 @@ class MentalModelsParser {
             
             // Parse model and description
             if (this.currentCategory && line.startsWith('*   **')) {
-                const parts = line.substring(7).split(':**');
+                const parts = line.substring(6).split(':**');
                 if (parts.length === 2) {
                     const model = {
                         name: parts[0].trim(),
