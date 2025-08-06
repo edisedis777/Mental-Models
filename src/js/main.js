@@ -116,9 +116,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function addGlobalEventListeners() {
         document.addEventListener('keydown', handleKeyboardShortcuts);
         
+        const menuButton = document.getElementById('menu-button');
+        const controlsPanel = document.querySelector('.controls-panel');
+        const constellationContainer = document.getElementById('constellation-container');
+
+        if (menuButton && controlsPanel) {
+            menuButton.addEventListener('click', () => {
+                controlsPanel.classList.toggle('show');
+                // Hide details panel if controls panel is shown
+                if (controlsPanel.classList.contains('show')) {
+                    searchManager.hideDetailsPanel();
+                }
+            });
+
+            // Close controls panel when clicking outside on mobile
+            constellationContainer.addEventListener('click', () => {
+                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show')) {
+                    controlsPanel.classList.remove('show');
+                }
+            });
+        }
+
         document.addEventListener('starSelected', (e) => {
             if (searchManager) {
                 searchManager.showModelDetails(e.detail);
+                // Hide controls panel if details panel is shown on mobile
+                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show')) {
+                    controlsPanel.classList.remove('show');
+                }
             }
         });
 
