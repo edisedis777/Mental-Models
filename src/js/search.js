@@ -17,6 +17,7 @@ class SearchManager {
         this.detailsCategory = document.getElementById('details-category');
         this.detailsCategoryContainer = document.getElementById('details-category-container');
         this.historyList = document.getElementById('history-list');
+        this.clearHistoryButton = document.getElementById('clear-history-button');
         
         this.activeFilters = new Set();
         this.searchTimeout = null;
@@ -107,6 +108,10 @@ class SearchManager {
                 e.preventDefault();
                 this.searchInput.focus();
             }
+        });
+
+        this.clearHistoryButton.addEventListener('click', () => {
+            this.clearHistory();
         });
     }
 
@@ -290,6 +295,14 @@ class SearchManager {
         }
 
         // Update the UI
+        this.updateHistoryUI();
+    }
+
+    /**
+     * Clear the view history
+     */
+    clearHistory() {
+        this.viewHistory = [];
         this.updateHistoryUI();
     }
 
