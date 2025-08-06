@@ -62,22 +62,23 @@
             <!-- Three.js canvas will be inserted here -->
         </div>
         
-        <!-- Mental Model Detail Modal -->
-        <div class="modal" id="model-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="modal-title"></h2>
-                    <span class="modal-close">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <p id="modal-description" class="modal-description"></p>
-                    <div class="modal-category">
+        <!-- Details Panel -->
+        <aside class="details-panel" id="details-panel">
+            <div class="details-content-container">
+                <div class="details-content">
+                    <h2 id="details-title" class="details-title">Select a star to see details</h2>
+                    <p id="details-description" class="details-description"></p>
+                    <div id="details-category-container" class="details-category" style="display: none;">
                         <span class="category-label">Category:</span>
-                        <span id="modal-category" class="category-value"></span>
+                        <span id="details-category" class="category-value"></span>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="history-panel">
+                <h3 class="history-title">History</h3>
+                <ul id="history-list" class="history-list"></ul>
+            </div>
+        </aside>
         
         <!-- Loading Indicator -->
         <div class="loading-container" id="loading-container">
