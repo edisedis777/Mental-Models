@@ -231,7 +231,7 @@ mark {
     background: rgba(255, 255, 255, 0.05);
 }
 
-.filter-item input[type="checkbox"] {
+.filter-item input[type='checkbox'] {
     margin-right: 10px;
     width: 18px;
     height: 18px;
@@ -304,36 +304,12 @@ mark {
     text-align: center;
 }
 
-/* Camera Controls */
-.camera-controls {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 40px);
-    grid-template-rows: repeat(2, 40px);
-    gap: 5px;
-    z-index: 100;
+/* Constellation Container */
+.constellation-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
 }
-
-.control-button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.control-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-#camera-up { grid-column: 2; grid-row: 1; }
-#camera-down { grid-column: 2; grid-row: 2; }
-#camera-left { grid-column: 1; grid-row: 2; }
-#camera-right { grid-column: 3; grid-row: 2; }
 
 /* Details Panel Styles */
 .details-panel {
@@ -346,7 +322,7 @@ mark {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
-    z-index: 60;
+    z-index: 50;
     backdrop-filter: blur(10px);
     transition: right 0.5s ease;
     display: flex;
@@ -477,8 +453,12 @@ mark {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
@@ -495,43 +475,56 @@ mark {
     font-size: 0.9rem;
     color: #95a5a6;
     z-index: 100;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    box-sizing: border-box;
+    position: relative;
 }
 
-/* Footer */
-.app-footer {
-    text-align: center;
-    padding: 15px;
-    background: rgba(20, 20, 40, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
-    color: #95a5a6;
-    z-index: 100;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    box-sizing: border-box;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-title {
+        font-size: 2rem;
+    }
+
+    .controls-panel {
+        width: 250px;
+        left: 10px;
+        top: 100px;
+        padding: 15px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    .modal-header {
+        padding: 20px 20px 10px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
 }
 
-.app-footer p {
-    margin-bottom: 10px;
-}
+@media (max-width: 480px) {
+    .controls-panel {
+        position: static;
+        width: 100%;
+        max-height: none;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
 
-.footer-link {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+    .app-container {
+        height: auto;
+        overflow-y: auto;
+    }
 
-.footer-link:hover {
-    color: #5dade2;
+    .constellation-container {
+        height: 400px;
+    }
 }
-
-#reset-camera { grid-column: 2; grid-row: 1; }

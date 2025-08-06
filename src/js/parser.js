@@ -21,21 +21,21 @@ class MentalModelsParser {
 
         // Split into lines and process each line
         const lines = markdownText.split('\n');
-        
+
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
-            
+
             if (!line) {
                 continue;
             }
-            
+
             // Check for category headers
             if (line.startsWith('## ')) {
                 this.currentCategory = line.substring(3).trim();
                 this.categories[this.currentCategory] = [];
                 continue;
             }
-            
+
             // Parse model and description
             if (this.currentCategory && line.startsWith('*   **')) {
                 const parts = line.substring(6).split(':**');
@@ -44,13 +44,13 @@ class MentalModelsParser {
                         name: parts[0].trim(),
                         description: parts[1].trim(),
                         id: this.generateId(parts[0].trim()),
-                        category: this.currentCategory
+                        category: this.currentCategory,
                     };
                     this.categories[this.currentCategory].push(model);
                 }
             }
         }
-        
+
         return this.categories;
     }
 
@@ -60,8 +60,7 @@ class MentalModelsParser {
      * @returns {boolean} True if line is a category header
      */
     isCategoryHeader(line) {
-        return line.startsWith('Mental models in') || 
-               line.startsWith('**Mental models in');
+        return line.startsWith('Mental models in') || line.startsWith('**Mental models in');
     }
 
     /**
@@ -75,13 +74,13 @@ class MentalModelsParser {
             .replace(/\*\*/g, '') // Remove bold markdown
             .replace(/^Mental models in\s*/i, '') // Remove prefix
             .trim();
-        
+
         // Clean up common formatting
         categoryName = categoryName
             .replace(/\s+/g, ' ') // Multiple spaces to single space
             .replace(/\s+and\s+/gi, ' & ') // "and" to "&" for consistency
             .trim();
-        
+
         return categoryName;
     }
 
@@ -96,30 +95,30 @@ class MentalModelsParser {
             .replace(/^\|\s*/, '')
             .replace(/\s*\|$/, '')
             .split('|')
-            .map(cell => cell.trim());
-        
+            .map((cell) => cell.trim());
+
         // We expect exactly 2 cells: model name and description
         if (cells.length !== 2) {
             return null;
         }
-        
+
         const [name, description] = cells;
-        
+
         // Clean up the name and description
         const cleanName = this.cleanText(name);
         const cleanDescription = this.cleanText(description);
-        
+
         // Skip if name or description is empty
         if (!cleanName || !cleanDescription) {
             return null;
         }
-        
+
         return {
             name: cleanName,
             description: cleanDescription,
             // Additional metadata for the constellation
             id: this.generateId(cleanName),
-            category: this.currentCategory
+            category: this.currentCategory,
         };
     }
 
@@ -157,7 +156,7 @@ class MentalModelsParser {
         const stats = {
             totalCategories: Object.keys(this.categories).length,
             totalModels: 0,
-            modelsPerCategory: {}
+            modelsPerCategory: {},
         };
 
         for (const [category, models] of Object.entries(this.categories)) {
@@ -174,11 +173,11 @@ class MentalModelsParser {
      */
     getAllModels() {
         const allModels = [];
-        
+
         for (const models of Object.values(this.categories)) {
             allModels.push(...models);
         }
-        
+
         return allModels;
     }
 
@@ -189,13 +188,14 @@ class MentalModelsParser {
      */
     searchModels(query) {
         if (!query) return [];
-        
+
         const searchTerm = query.toLowerCase();
         const allModels = this.getAllModels();
-        
-        return allModels.filter(model => 
-            model.name.toLowerCase().includes(searchTerm) ||
-            model.description.toLowerCase().includes(searchTerm)
+
+        return allModels.filter(
+            (model) =>
+                model.name.toLowerCase().includes(searchTerm) ||
+                model.description.toLowerCase().includes(searchTerm)
         );
     }
 
@@ -246,12 +246,12 @@ The tendency to judge the frequency of events by the ease with which examples co
 
     const parser = new MentalModelsParser();
     const result = parser.parse(sampleMarkdown);
-    
+
     console.log('Parsed Result:', result);
     console.log('Stats:', parser.getStats());
     console.log('All Models:', parser.getAllModels());
     console.log('Search Results for "cost":', parser.searchModels('cost'));
-    
+
     return result;
 }
 

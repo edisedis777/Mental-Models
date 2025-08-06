@@ -18,13 +18,13 @@ class SearchManager {
         this.detailsCategoryContainer = document.getElementById('details-category-container');
         this.historyList = document.getElementById('history-list');
         this.clearHistoryButton = document.getElementById('clear-history-button');
-        
+
         this.activeFilters = new Set();
         this.searchTimeout = null;
         this.currentSearchResults = [];
         this.viewHistory = [];
         this.maxHistory = 10;
-        
+
         this.init();
     }
 
@@ -42,28 +42,30 @@ class SearchManager {
      */
     createCategoryFilters() {
         const categories = this.parser.getCategoryNames();
-        
-        categories.forEach(category => {
+
+        categories.forEach((category) => {
             const filterItem = document.createElement('div');
             filterItem.className = 'filter-item';
-            
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = `filter-${category.replace(/\s+/g, '-').toLowerCase()}`;
             checkbox.value = category;
             checkbox.checked = true;
-            
+
             const label = document.createElement('label');
             label.htmlFor = checkbox.id;
             label.textContent = category;
-            
+
             const colorIndicator = document.createElement('span');
             colorIndicator.className = 'color-indicator';
             const config = this.constellation.categoryConfigs[category];
             if (config) {
-                colorIndicator.style.backgroundColor = `#${config.color.toString(16).padStart(6, '0')}`;
+                colorIndicator.style.backgroundColor = `#${config.color
+                    .toString(16)
+                    .padStart(6, '0')}`;
             }
-            
+
             label.appendChild(colorIndicator);
             filterItem.appendChild(checkbox);
             filterItem.appendChild(label);
@@ -125,7 +127,7 @@ class SearchManager {
         }
 
         const results = this.parser.searchModels(query);
-        this.currentSearchResults = results.map(model => model.id);
+        this.currentSearchResults = results.map((model) => model.id);
         this.constellation.highlightSearchResults(this.currentSearchResults);
         this.updateSearchResultsUI(results, query);
     }
@@ -149,9 +151,9 @@ class SearchManager {
      */
     toggleAllCategories() {
         const checkboxes = this.categoryFiltersContainer.querySelectorAll('input[type="checkbox"]');
-        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
 
-        checkboxes.forEach(checkbox => {
+        checkboxes.forEach((checkbox) => {
             checkbox.checked = !allChecked;
             if (checkbox.checked) {
                 this.activeFilters.add(checkbox.value);
@@ -187,15 +189,20 @@ class SearchManager {
         resultsContainer.className = 'search-results';
         const header = document.createElement('div');
         header.className = 'search-results-header';
-        header.textContent = `${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
+        header.textContent = `${results.length} result${
+            results.length !== 1 ? 's' : ''
+        } for "${query}"`;
         resultsContainer.appendChild(header);
 
-        results.forEach(model => {
+        results.forEach((model) => {
             const resultItem = document.createElement('div');
             resultItem.className = 'search-result-item';
             resultItem.innerHTML = `
                 <div class="result-name">${this.highlightSearchTerm(model.name, query)}</div>
-                <div class="result-description">${this.highlightSearchTerm(model.description, query)}</div>
+                <div class="result-description">${this.highlightSearchTerm(
+                    model.description,
+                    query
+                )}</div>
                 <div class="result-category">${model.category}</div>
             `;
             resultItem.addEventListener('click', () => {
@@ -281,7 +288,7 @@ class SearchManager {
      */
     addToHistory(model) {
         // Remove the model from the history if it already exists
-        const existingIndex = this.viewHistory.findIndex(item => item.id === model.id);
+        const existingIndex = this.viewHistory.findIndex((item) => item.id === model.id);
         if (existingIndex > -1) {
             this.viewHistory.splice(existingIndex, 1);
         }
@@ -311,7 +318,7 @@ class SearchManager {
      */
     updateHistoryUI() {
         this.historyList.innerHTML = '';
-        this.viewHistory.forEach(model => {
+        this.viewHistory.forEach((model) => {
             const historyItem = document.createElement('li');
             historyItem.className = 'history-item';
             historyItem.textContent = model.name;
@@ -342,7 +349,7 @@ class SearchManager {
      */
     showAllCategories() {
         const checkboxes = this.categoryFiltersContainer.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
+        checkboxes.forEach((checkbox) => {
             checkbox.checked = true;
             this.activeFilters.add(checkbox.value);
         });

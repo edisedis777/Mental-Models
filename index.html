@@ -1,116 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Models Constellation</title>
-    <meta name="description" content="An interactive constellation visualization of mental models">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="src/css/main.css">
-    <link rel="stylesheet" href="src/css/constellation.css">
-    
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <h1 class="app-title">Mental Models Constellation</h1>
-            <p class="app-subtitle">Explore the universe of thinking frameworks</p>
-        </header>
-        
-        <!-- Controls Panel -->
-        <div class="controls-panel">
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-input" placeholder="Search mental models...">
-                <button id="search-button" class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            
-            <div class="filter-container">
-                <h3 class="filter-title">Filter by Category:</h3>
-                <div class="category-filters" id="category-filters">
-                    <!-- Category filters will be dynamically added here -->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mental Models Constellation</title>
+        <meta
+            name="description"
+            content="An interactive constellation visualization of mental models"
+        />
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="src/css/main.css" />
+        <link rel="stylesheet" href="src/css/constellation.css" />
+
+        <!-- Three.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+        <!-- Font Awesome for icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+    </head>
+    <body>
+        <div class="app-container">
+            <!-- Header -->
+            <header class="app-header">
+                <h1 class="app-title">Mental Models Constellation</h1>
+                <p class="app-subtitle">Explore the universe of thinking frameworks</p>
+            </header>
+
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="search-container">
+                    <input
+                        type="text"
+                        id="search-input"
+                        class="search-input"
+                        placeholder="Search mental models..."
+                    />
+                    <button id="search-button" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <button id="show-all-button" class="show-all-button">Show All</button>
-            </div>
-            
-            <div class="info-container">
-                <div class="info-item">
-                    <i class="fas fa-mouse"></i>
-                    <span>Drag to rotate</span>
+
+                <div class="filter-container">
+                    <h3 class="filter-title">Filter by Category:</h3>
+                    <div class="category-filters" id="category-filters">
+                        <!-- Category filters will be dynamically added here -->
+                    </div>
+                    <button id="show-all-button" class="show-all-button">Show All</button>
                 </div>
-                <div class="info-item">
-                    <i class="fas fa-search-plus"></i>
-                    <span>Scroll to zoom</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-hand-pointer"></i>
-                    <span>Click stars for details</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Camera Controls -->
-        <div class="camera-controls" id="camera-controls">
-            <button id="camera-up" class="control-button"><i class="fas fa-arrow-up"></i></button>
-            <button id="camera-down" class="control-button"><i class="fas fa-arrow-down"></i></button>
-            <button id="camera-left" class="control-button"><i class="fas fa-arrow-left"></i></button>
-            <button id="camera-right" class="control-button"><i class="fas fa-arrow-right"></i></button>
-            <button id="reset-camera" class="control-button" style="grid-column: 2; grid-row: 1;"><i class="fas fa-sync-alt"></i></button>
-        </div>
-        
-        <!-- Constellation Container -->
-        <div class="constellation-container" id="constellation-container">
-            <!-- Three.js canvas will be inserted here -->
-        </div>
-        
-        <!-- Details Panel -->
-        <aside class="details-panel" id="details-panel">
-            <div class="details-content-container">
-                <div class="details-content">
-                    <h2 id="details-title" class="details-title">Select a star to see details</h2>
-                    <p id="details-description" class="details-description"></p>
-                    <div id="details-category-container" class="details-category" style="display: none;">
-                        <span class="category-label">Category:</span>
-                        <span id="details-category" class="category-value"></span>
+
+                <div class="info-container">
+                    <div class="info-item">
+                        <i class="fas fa-mouse"></i>
+                        <span>Drag to rotate</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Scroll to zoom</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span>Click stars for details</span>
                     </div>
                 </div>
             </div>
-            <div class="history-panel">
-                <div class="history-header">
-                    <h3 class="history-title">History</h3>
-                    <button id="clear-history-button" class="clear-history-button" title="Clear history">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <ul id="history-list" class.  = "history-list"></ul>
+
+            <!-- Constellation Container -->
+            <div class="constellation-container" id="constellation-container">
+                <!-- Three.js canvas will be inserted here -->
             </div>
-        </aside>
-        
-        <!-- Loading Indicator -->
-        <div class="loading-container" id="loading-container">
-            <div class="loading-spinner"></div>
-            <p class="loading-text">Creating constellation...</p>
+
+            <!-- Details Panel -->
+            <aside class="details-panel" id="details-panel">
+                <div class="details-content-container">
+                    <div class="details-content">
+                        <h2 id="details-title" class="details-title">
+                            Select a star to see details
+                        </h2>
+                        <p id="details-description" class="details-description"></p>
+                        <div
+                            id="details-category-container"
+                            class="details-category"
+                            style="display: none"
+                        >
+                            <span class="category-label">Category:</span>
+                            <span id="details-category" class="category-value"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="history-panel">
+                    <div class="history-header">
+                        <h3 class="history-title">History</h3>
+                        <button
+                            id="clear-history-button"
+                            class="clear-history-button"
+                            title="Clear history"
+                        >
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <ul id="history-list" class.="history-list"></ul>
+                </div>
+            </aside>
+
+            <!-- Loading Indicator -->
+            <div class="loading-container" id="loading-container">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Creating constellation...</p>
+            </div>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <p>Mental Models Constellation • Created with Three.js</p>
+            </footer>
         </div>
-        
-        <!-- Footer -->
-        <footer class="app-footer">
-            <p>Mental Models Constellation • Created with Three.js</p>
-            <a href="list.html" class="footer-link">View Full List</a>
-        </footer>
-    </div>
-    
-    <!-- JavaScript -->
-    <script src="src/js/parser.js"></script>
-    <script src="src/js/constellation.js"></script>
-    <script src="src/js/search.js"></script>
-    <script src="src/js/main.js"></script>
-</body>
+
+        <!-- JavaScript -->
+        <script src="src/js/parser.js"></script>
+        <script src="src/js/constellation.js"></script>
+        <script src="src/js/search.js"></script>
+        <script src="src/js/main.js"></script>
+    </body>
 </html>

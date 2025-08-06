@@ -17,51 +17,51 @@ class ConstellationVisualization {
         this.selectedStar = null;
         this.isRotating = true;
         this.rotationSpeed = 0.001;
-        
+
         // Category constellation configurations
         this.categoryConfigs = {
             'Economics and Strategy': {
                 color: 0xff6b35,
-                position: { x: 0, y: 30, z: 0 }
+                position: { x: 0, y: 30, z: 0 },
             },
             'Human Nature and Judgment': {
                 color: 0x9b59b6,
-                position: { x: -35, y: 0, z: 15 }
+                position: { x: -35, y: 0, z: 15 },
             },
             'Numeracy and Interpretation': {
                 color: 0xe67e22,
-                position: { x: 35, y: 0, z: 15 }
+                position: { x: 35, y: 0, z: 15 },
             },
-            'Thinking': {
+            Thinking: {
                 color: 0x3498db,
-                position: { x: 0, y: -30, z: 15 }
+                position: { x: 0, y: -30, z: 15 },
             },
-            'Systems': {
+            Systems: {
                 color: 0x2ecc71,
-                position: { x: -40, y: 15, z: -15 }
+                position: { x: -40, y: 15, z: -15 },
             },
             'Biological World': {
                 color: 0x1abc9c, // Turquoise
-                position: { x: 40, y: 15, z: -15 }
+                position: { x: 40, y: 15, z: -15 },
             },
             'Physical World': {
                 color: 0xe74c3c,
-                position: { x: 0, y: 35, z: -20 }
+                position: { x: 0, y: 35, z: -20 },
             },
             'Military and War': {
                 color: 0xff0000,
-                position: { x: -30, y: -20, z: -15 }
+                position: { x: -30, y: -20, z: -15 },
             },
             'Political Failure': {
                 color: 0xf39c12,
-                position: { x: 30, y: -20, z: -15 }
+                position: { x: 30, y: -20, z: -15 },
             },
             'Rule of Law': {
                 color: 0xf1c40f,
-                position: { x: 0, y: 0, z: -30 }
-            }
+                position: { x: 0, y: 0, z: -30 },
+            },
         };
-        
+
         this.init();
     }
 
@@ -86,7 +86,7 @@ class ConstellationVisualization {
     createScene() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x0a0a0a);
-        
+
         // Add fog for depth
         this.scene.fog = new THREE.Fog(0x0a0a0a, 50, 200);
     }
@@ -101,7 +101,7 @@ class ConstellationVisualization {
             0.1,
             1000
         );
-        this.camera.position.set(0, 0, 100); // Increased Z position
+        this.camera.position.set(0, 0, 50);
     }
 
     /**
@@ -146,7 +146,7 @@ class ConstellationVisualization {
             color: 0xffffff,
             size: 0.5,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.8,
         });
 
         const stars = new THREE.Points(starGeometry, starMaterial);
@@ -157,25 +157,19 @@ class ConstellationVisualization {
      * Create constellations for each category
      */
     createConstellations() {
-        console.log('createConstellations called. Data:', this.data);
-        let totalStarsCreated = 0;
         for (const [category, models] of Object.entries(this.data)) {
             if (this.categoryConfigs[category]) {
-                const starsInCat = this.createCategoryConstellation(category, models);
-                totalStarsCreated += starsInCat;
+                this.createCategoryConstellation(category, models);
             }
         }
-        console.log(`Total stars created across all constellations: ${totalStarsCreated}`);
     }
 
     /**
      * Create constellation for a specific category
      * @param {string} category - Category name
      * @param {Array} models - Array of mental models in this category
-     * @returns {number} Number of stars created in this category
      */
     createCategoryConstellation(category, models) {
-        console.log(`Creating constellation for category: ${category} with ${models.length} models.`);
         const config = this.categoryConfigs[category];
         const constellationGroup = new THREE.Group();
         constellationGroup.userData = { category: category };
@@ -188,16 +182,10 @@ class ConstellationVisualization {
         });
 
         // Position the constellation
-        constellationGroup.position.set(
-            config.position.x,
-            config.position.y,
-            config.position.z
-        );
-        console.log(`Constellation group for ${category} positioned at:`, constellationGroup.position);
+        constellationGroup.position.set(config.position.x, config.position.y, config.position.z);
 
         this.scene.add(constellationGroup);
         this.constellations.set(category, constellationGroup);
-        return models.length;
     }
 
     /**
@@ -210,19 +198,19 @@ class ConstellationVisualization {
      */
     createStar(model, config, index, total) {
         // Create star geometry
-        const geometry = new THREE.SphereGeometry(1.5, 16, 16); // Increased size
-        
+        const geometry = new THREE.SphereGeometry(0.8, 16, 16);
+
         // Create material with category color
         const material = new THREE.MeshPhongMaterial({
             color: config.color,
             emissive: config.color,
             emissiveIntensity: 0.3,
             transparent: true,
-            opacity: 0.9
+            opacity: 0.9,
         });
 
         const star = new THREE.Mesh(geometry, material);
-        
+
         // Position star in a circle around the constellation pattern
         const angle = (index / total) * Math.PI * 2;
         const radius = 15 + Math.random() * 5;
@@ -231,17 +219,16 @@ class ConstellationVisualization {
             Math.sin(angle) * radius,
             (Math.random() - 0.5) * 8
         );
-        // console.log(`Star ${model.name} positioned at:`, star.position);
 
         // Store model data in star
         star.userData = model;
 
         // Add glow effect
-        const glowGeometry = new THREE.SphereGeometry(2.0, 16, 16); // Increased glow size
+        const glowGeometry = new THREE.SphereGeometry(1.2, 16, 16);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: config.color,
             transparent: true,
-            opacity: 0.3
+            opacity: 0.3,
         });
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
         star.add(glow);
@@ -258,7 +245,7 @@ class ConstellationVisualization {
             mouseY: 0,
             targetRotationX: 0,
             targetRotationY: 0,
-            isMouseDown: false
+            isMouseDown: false,
         };
     }
 
@@ -278,13 +265,6 @@ class ConstellationVisualization {
 
         // Keyboard events
         document.addEventListener('keydown', (event) => this.onKeyDown(event));
-
-        // Camera controls
-        document.getElementById('camera-up').addEventListener('click', () => this.panCamera(0, 1));
-        document.getElementById('camera-down').addEventListener('click', () => this.panCamera(0, -1));
-        document.getElementById('camera-left').addEventListener('click', () => this.panCamera(-1, 0));
-        document.getElementById('camera-right').addEventListener('click', () => this.panCamera(1, 0));
-        document.getElementById('reset-camera').addEventListener('click', () => this.resetCamera());
     }
 
     /**
@@ -334,7 +314,7 @@ class ConstellationVisualization {
 
         if (intersects.length > 0) {
             const clickedObject = intersects[0].object;
-            
+
             // Find the star (might be the glow or the actual star)
             let star = clickedObject;
             while (star.parent && !star.userData.name) {
@@ -399,30 +379,18 @@ class ConstellationVisualization {
 
         // Trigger custom event
         const event = new CustomEvent('starSelected', {
-            detail: star.userData
+            detail: star.userData,
         });
         document.dispatchEvent(event);
     }
 
     /**
-     * Reset camera to default position and scene rotation
+     * Reset camera to default position
      */
     resetCamera() {
         this.camera.position.set(0, 0, 50);
-        this.scene.rotation.set(0, 0, 0);
         this.controls.targetRotationX = 0;
         this.controls.targetRotationY = 0;
-    }
-
-    /**
-     * Pan the camera
-     * @param {number} dx - Change in x direction
-     * @param {number} dy - Change in y direction
-     */
-    panCamera(dx, dy) {
-        const panSpeed = 0.5;
-        this.camera.position.x += dx * panSpeed;
-        this.camera.position.y += dy * panSpeed;
     }
 
     /**
@@ -455,7 +423,7 @@ class ConstellationVisualization {
      * Reset all highlights
      */
     resetHighlights() {
-        this.stars.forEach(star => {
+        this.stars.forEach((star) => {
             star.material.emissiveIntensity = 0.3;
             star.scale.set(1, 1, 1);
         });
@@ -469,7 +437,7 @@ class ConstellationVisualization {
 
         // Rotate constellations
         if (this.isRotating) {
-            this.constellations.forEach(constellation => {
+            this.constellations.forEach((constellation) => {
                 constellation.rotation.y += this.rotationSpeed;
             });
         }
