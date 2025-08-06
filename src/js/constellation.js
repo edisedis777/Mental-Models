@@ -411,7 +411,7 @@ class ConstellationVisualization {
      * @param {number} dy - Change in y direction
      */
     panCamera(dx, dy) {
-        const panSpeed = 2;
+        const panSpeed = 0.5;
         this.camera.position.x += dx * panSpeed;
         this.camera.position.y += dy * panSpeed;
     }
