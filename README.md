@@ -6,30 +6,20 @@ An interactive constellation visualization that transforms mental models into a 
 
 ## 🌟 Overview
 
-This project creates an immersive, starry-sky visualization of mental models, organizing them into constellation-like groupings based on their categories. Each category is represented by a creative symbol or animal (similar to zodiac constellations), and individual mental models appear as stars that users can explore interactively.
+This project creates an immersive, starry-sky visualization of mental models, organizing them into constellation-like groupings based on their categories. Individual mental models appear as stars that users can explore interactively.
 
 ### Live Demo
 
 
 ## ✨ Features
 
-- **Constellation Visualization**: Mental models arranged in a beautiful starry sky with category-based constellations
-- **Interactive Stars**: Click on any mental model star to view its full description
-- **Category Constellations**: Each category represented by unique constellation symbols:
-  - Economics & Strategy → The Phoenix (rebirth through innovation)
-  - Human Nature & Judgment → The Owl (wisdom and insight)
-  - Numeracy & Interpretation → The Fox (cunning with numbers)
-  - Thinking → The Dolphin (intelligence and adaptability)
-  - Systems → The Spider (web of connections)
-  - Biological World → The Tree of Life
-  - Physical World → The Dragon (power and natural forces)
-  - Military & War → The Wolf (strategy and pack tactics)
-  - Political Failure → The Chameleon (adaptation and deception)
-  - Rule of Law → The Scales (balance and justice)
-- **Search Functionality**: Real-time text search across all mental models
-- **Category Filtering**: Toggle visibility of entire constellations
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Smooth Animations**: Elegant transitions and hover effects using Three.js
+- **Constellation Visualization**
+- **Interactive Stars**
+- **Category Constellations**
+- **Search Functionality**
+- **Category Filtering**
+- **Responsive Design**
+- **Smooth Animations**
 
 ## 🛠️ Technical Stack
 
