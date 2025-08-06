@@ -246,6 +246,12 @@ class ConstellationVisualization {
             targetRotationX: 0,
             targetRotationY: 0,
             isMouseDown: false,
+            touchStartX: 0,
+            touchStartY: 0,
+            touchZoomDistance: 0,
+            lastTouchX: 0,
+            lastTouchY: 0,
+            isTwoFingerTouch: false, // New property to track two-finger touch
         };
     }
 
@@ -318,7 +324,12 @@ class ConstellationVisualization {
         if (event.touches.length === 1) {
             this.controls.mouseX = event.touches[0].clientX;
             this.controls.mouseY = event.touches[0].clientY;
-            this.controls.isMouseDown = true; // Re-using isMouseDown for touch
+            this.controls.isMouseDown = true; // Re-using isMouseDown for single touch (rotation)
+            this.controls.isTwoFingerTouch = false;
+        } else if (event.touches.length === 2) {
+            // Pinch to zoom
+            this.controls.touchZoomDistance = this.getTouchDistance(event.touches);
+            this.controls.isTwoFingerTouch = true;
         }
     }
 
@@ -328,7 +339,7 @@ class ConstellationVisualization {
      */
     onTouchMove(event) {
         event.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
-        if (this.controls.isMouseDown && event.touches.length === 1) {
+        if (event.touches.length === 1 && this.controls.isMouseDown && !this.controls.isTwoFingerTouch) {
             const deltaX = event.touches[0].clientX - this.controls.mouseX;
             const deltaY = event.touches[0].clientY - this.controls.mouseY;
 
@@ -337,6 +348,12 @@ class ConstellationVisualization {
 
             this.controls.mouseX = event.touches[0].clientX;
             this.controls.mouseY = event.touches[0].clientY;
+        } else if (event.touches.length === 2) {
+            const currentTouchDistance = this.getTouchDistance(event.touches);
+            const delta = currentTouchDistance - this.controls.touchZoomDistance;
+
+            this.camera.position.z = Math.max(20, Math.min(100, this.camera.position.z - delta * 0.1));
+            this.controls.touchZoomDistance = currentTouchDistance;
         }
     }
 
@@ -346,6 +363,18 @@ class ConstellationVisualization {
      */
     onTouchEnd(event) {
         this.controls.isMouseDown = false;
+        this.controls.isTwoFingerTouch = false;
+    }
+
+    /**
+     * Helper to get distance between two touch points
+     * @param {TouchList} touches
+     * @returns {number}
+     */
+    getTouchDistance(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**
@@ -498,6 +527,13 @@ class ConstellationVisualization {
         this.stars.clear();
         this.constellations.clear();
     }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ConstellationVisualization;
+} else {
+    window.ConstellationVisualization = ConstellationVisualization;
 }
 
 // Export for use in other modules
