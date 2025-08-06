@@ -333,6 +333,39 @@ mark {
     right: 20px; /* Slide in */
 }
 
+@media (max-width: 768px) {
+    .details-panel {
+        width: 90%;
+        right: -100%; /* Hide off-screen */
+        left: 5%; /* Center it */
+        top: 80px; /* Adjust top position */
+        max-height: calc(100vh - 100px);
+        transition: right 0.5s ease, left 0.5s ease;
+    }
+
+    .details-panel.show {
+        right: 5%; /* Slide in to center */
+        left: 5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .details-panel {
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: auto; /* Override top */
+        bottom: -100%; /* Hide off-screen */
+        max-height: 70vh; /* Take up 70% of viewport height */
+        border-radius: 10px 10px 0 0; /* Rounded top corners */
+        transition: bottom 0.5s ease;
+    }
+
+    .details-panel.show {
+        bottom: 0; /* Slide up from bottom */
+    }
+}
+
 .details-content-container {
     flex: 1;
     overflow-y: auto;
@@ -484,11 +517,36 @@ mark {
         font-size: 2rem;
     }
 
+    .app-subtitle {
+        font-size: 0.9rem;
+    }
+
     .controls-panel {
         width: 250px;
         left: 10px;
         top: 100px;
         padding: 15px;
+    }
+
+    .search-input {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+
+    .search-button {
+        font-size: 14px;
+    }
+
+    .filter-title {
+        font-size: 1rem;
+    }
+
+    .filter-item label {
+        font-size: 0.85rem;
+    }
+
+    .info-item {
+        font-size: 0.8rem;
     }
 
     .modal-content {
@@ -510,6 +568,18 @@ mark {
 }
 
 @media (max-width: 480px) {
+    .app-header {
+        padding: 10px 5px;
+    }
+
+    .app-title {
+        font-size: 1.5rem;
+    }
+
+    .app-subtitle {
+        font-size: 0.7rem;
+    }
+
     .controls-panel {
         position: static;
         width: 100%;
@@ -517,14 +587,66 @@ mark {
         border-radius: 0;
         border-left: none;
         border-right: none;
+        padding: 10px;
     }
 
-    .app-container {
-        height: auto;
-        overflow-y: auto;
+    .search-container {
+        margin-bottom: 10px;
+    }
+
+    .filter-container {
+        margin-bottom: 10px;
+    }
+
+    .info-container {
+        padding-top: 10px;
     }
 
     .constellation-container {
-        height: 400px;
+        height: 250px;
+    }
+
+    .details-panel {
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: auto; /* Override top */
+        bottom: -100%; /* Hide off-screen */
+        max-height: 60vh; /* Take up 60% of viewport height */
+        border-radius: 10px 10px 0 0; /* Rounded top corners */
+        transition: bottom 0.5s ease;
+    }
+
+    .details-panel.show {
+        bottom: 0; /* Slide up from bottom */
+    }
+
+    .details-title {
+        font-size: 1.2rem;
+    }
+
+    .details-description {
+        font-size: 0.85rem;
+    }
+
+    .details-category {
+        font-size: 0.75rem;
+    }
+
+    .history-title {
+        font-size: 1.1rem;
+    }
+
+    .history-item {
+        font-size: 0.8rem;
+    }
+
+    .loading-text {
+        font-size: 0.9rem;
+    }
+
+    .app-footer {
+        padding: 8px;
+        font-size: 0.7rem;
     }
 }
