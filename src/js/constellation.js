@@ -21,63 +21,43 @@ class ConstellationVisualization {
         // Category constellation configurations
         this.categoryConfigs = {
             'Economics and Strategy': {
-                symbol: 'phoenix',
                 color: 0xff6b35,
-                constellationPattern: 'phoenix',
                 position: { x: 0, y: 30, z: 0 }
             },
             'Human Nature and Judgment': {
-                symbol: 'owl',
                 color: 0x9b59b6,
-                constellationPattern: 'owl',
                 position: { x: -35, y: 0, z: 15 }
             },
             'Numeracy and Interpretation': {
-                symbol: 'fox',
                 color: 0xe67e22,
-                constellationPattern: 'fox',
                 position: { x: 35, y: 0, z: 15 }
             },
             'Thinking': {
-                symbol: 'dolphin',
                 color: 0x3498db,
-                constellationPattern: 'dolphin',
                 position: { x: 0, y: -30, z: 15 }
             },
             'Systems': {
-                symbol: 'spider',
                 color: 0x2ecc71,
-                constellationPattern: 'spider',
                 position: { x: -40, y: 15, z: -15 }
             },
             'Biological World': {
-                symbol: 'tree',
                 color: 0x27ae60,
-                constellationPattern: 'tree',
                 position: { x: 40, y: 15, z: -15 }
             },
             'Physical World': {
-                symbol: 'dragon',
                 color: 0xe74c3c,
-                constellationPattern: 'dragon',
                 position: { x: 0, y: 35, z: -20 }
             },
             'Military and War': {
-                symbol: 'wolf',
                 color: 0xff0000,
-                constellationPattern: 'wolf',
                 position: { x: -30, y: -20, z: -15 }
             },
             'Political Failure': {
-                symbol: 'chameleon',
                 color: 0xf39c12,
-                constellationPattern: 'chameleon',
                 position: { x: 30, y: -20, z: -15 }
             },
             'Rule of Law': {
-                symbol: 'scales',
                 color: 0xf1c40f,
-                constellationPattern: 'scales',
                 position: { x: 0, y: 0, z: -30 }
             }
         };
@@ -194,9 +174,6 @@ class ConstellationVisualization {
         const constellationGroup = new THREE.Group();
         constellationGroup.userData = { category: category };
 
-        // Create constellation pattern
-        this.createConstellationPattern(constellationGroup, config);
-
         // Create stars for each mental model
         models.forEach((model, index) => {
             const star = this.createStar(model, config, index, models.length);
@@ -213,158 +190,6 @@ class ConstellationVisualization {
 
         this.scene.add(constellationGroup);
         this.constellations.set(category, constellationGroup);
-    }
-
-    /**
-     * Create constellation pattern lines
-     * @param {THREE.Group} group - The constellation group
-     * @param {Object} config - Category configuration
-     */
-    createConstellationPattern(group, config) {
-        const material = new THREE.LineBasicMaterial({
-            color: config.color,
-            transparent: true,
-            opacity: 0.3
-        });
-
-        const points = this.getConstellationPoints(config.constellationPattern);
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const lines = new THREE.Line(geometry, material);
-        group.add(lines);
-    }
-
-    /**
-     * Get points for constellation pattern
-     * @param {string} pattern - Pattern name
-     * @returns {Array} Array of Vector3 points
-     */
-    getConstellationPoints(pattern) {
-        const points = [];
-        const scale = 8;
-
-        switch (pattern) {
-            case 'phoenix':
-                // Phoenix wing pattern
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                points.push(new THREE.Vector3(-scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(0, scale, 0));
-                points.push(new THREE.Vector3(scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(scale, 0, 0));
-                points.push(new THREE.Vector3(0, -scale/2, 0));
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                break;
-            
-            case 'owl':
-                // Owl face pattern
-                points.push(new THREE.Vector3(-scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(-scale/2, -scale/2, 0));
-                points.push(new THREE.Vector3(scale/2, -scale/2, 0));
-                points.push(new THREE.Vector3(scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(-scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(0, 0, 0));
-                points.push(new THREE.Vector3(scale/2, scale/2, 0));
-                break;
-            
-            case 'fox':
-                // Fox profile pattern
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                points.push(new THREE.Vector3(-scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(0, scale/3, 0));
-                points.push(new THREE.Vector3(scale/2, 0, 0));
-                points.push(new THREE.Vector3(scale/3, -scale/2, 0));
-                points.push(new THREE.Vector3(-scale/3, -scale/3, 0));
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                break;
-            
-            case 'dolphin':
-                // Dolphin jumping pattern
-                points.push(new THREE.Vector3(-scale, -scale/2, 0));
-                points.push(new THREE.Vector3(-scale/2, 0, 0));
-                points.push(new THREE.Vector3(0, scale, 0));
-                points.push(new THREE.Vector3(scale/2, 0, 0));
-                points.push(new THREE.Vector3(scale, -scale/2, 0));
-                break;
-            
-            case 'spider':
-                // Spider web pattern
-                points.push(new THREE.Vector3(0, 0, 0));
-                for (let i = 0; i < 8; i++) {
-                    const angle = (i / 8) * Math.PI * 2;
-                    points.push(new THREE.Vector3(
-                        Math.cos(angle) * scale,
-                        Math.sin(angle) * scale,
-                        0
-                    ));
-                    points.push(new THREE.Vector3(0, 0, 0));
-                }
-                break;
-            
-            case 'tree':
-                // Tree pattern
-                points.push(new THREE.Vector3(0, -scale, 0));
-                points.push(new THREE.Vector3(0, 0, 0));
-                points.push(new THREE.Vector3(-scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(0, 0, 0));
-                points.push(new THREE.Vector3(scale/2, scale/2, 0));
-                points.push(new THREE.Vector3(0, 0, 0));
-                points.push(new THREE.Vector3(0, scale, 0));
-                break;
-            
-            case 'dragon':
-                // Dragon serpentine pattern
-                for (let i = 0; i < 10; i++) {
-                    const x = Math.sin(i * 0.5) * scale;
-                    const y = (i - 5) * scale/5;
-                    points.push(new THREE.Vector3(x, y, 0));
-                }
-                break;
-            
-            case 'wolf':
-                // Wolf howling pattern
-                points.push(new THREE.Vector3(-scale/2, -scale/2, 0));
-                points.push(new THREE.Vector3(-scale/3, 0, 0));
-                points.push(new THREE.Vector3(0, scale/2, 0));
-                points.push(new THREE.Vector3(scale/3, 0, 0));
-                points.push(new THREE.Vector3(scale/2, -scale/2, 0));
-                points.push(new THREE.Vector3(0, -scale/3, 0));
-                break;
-            
-            case 'chameleon':
-                // Chameleon spiral pattern
-                for (let i = 0; i < 12; i++) {
-                    const angle = i * 0.5;
-                    const radius = scale * (1 - i/12);
-                    points.push(new THREE.Vector3(
-                        Math.cos(angle) * radius,
-                        Math.sin(angle) * radius,
-                        0
-                    ));
-                }
-                break;
-            
-            case 'scales':
-                // Scales pattern
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                points.push(new THREE.Vector3(0, scale/3, 0));
-                points.push(new THREE.Vector3(scale, 0, 0));
-                points.push(new THREE.Vector3(0, -scale/3, 0));
-                points.push(new THREE.Vector3(-scale, 0, 0));
-                break;
-            
-            default:
-                // Default circular pattern
-                for (let i = 0; i <= 8; i++) {
-                    const angle = (i / 8) * Math.PI * 2;
-                    points.push(new THREE.Vector3(
-                        Math.cos(angle) * scale,
-                        Math.sin(angle) * scale,
-                        0
-                    ));
-                }
-                break;
-        }
-
-        return points;
     }
 
     /**
