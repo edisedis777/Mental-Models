@@ -260,6 +260,11 @@ class ConstellationVisualization {
         this.renderer.domElement.addEventListener('click', (event) => this.onMouseClick(event));
         this.renderer.domElement.addEventListener('wheel', (event) => this.onMouseWheel(event));
 
+        // Touch events
+        this.renderer.domElement.addEventListener('touchstart', (event) => this.onTouchStart(event));
+        this.renderer.domElement.addEventListener('touchmove', (event) => this.onTouchMove(event));
+        this.renderer.domElement.addEventListener('touchend', (event) => this.onTouchEnd(event));
+
         // Window resize
         window.addEventListener('resize', () => this.onWindowResize());
 
@@ -301,6 +306,45 @@ class ConstellationVisualization {
      * @param {MouseEvent} event
      */
     onMouseUp(event) {
+        this.controls.isMouseDown = false;
+    }
+
+    /**
+     * Handle touch start
+     * @param {TouchEvent} event
+     */
+    onTouchStart(event) {
+        event.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
+        if (event.touches.length === 1) {
+            this.controls.mouseX = event.touches[0].clientX;
+            this.controls.mouseY = event.touches[0].clientY;
+            this.controls.isMouseDown = true; // Re-using isMouseDown for touch
+        }
+    }
+
+    /**
+     * Handle touch move
+     * @param {TouchEvent} event
+     */
+    onTouchMove(event) {
+        event.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
+        if (this.controls.isMouseDown && event.touches.length === 1) {
+            const deltaX = event.touches[0].clientX - this.controls.mouseX;
+            const deltaY = event.touches[0].clientY - this.controls.mouseY;
+
+            this.scene.rotation.y += deltaX * 0.005;
+            this.scene.rotation.x += deltaY * 0.005;
+
+            this.controls.mouseX = event.touches[0].clientX;
+            this.controls.mouseY = event.touches[0].clientY;
+        }
+    }
+
+    /**
+     * Handle touch end
+     * @param {TouchEvent} event
+     */
+    onTouchEnd(event) {
         this.controls.isMouseDown = false;
     }
 
