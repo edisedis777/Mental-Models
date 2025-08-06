@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Models List</title>
+    <link rel="stylesheet" href="src/css/main.css">
+    <style>
+        body {
+            overflow-y: auto;
+        }
+        .list-container {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .list-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .model-category {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #3498db;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .model-item {
+            margin-bottom: 20px;
+        }
+        .model-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .model-description {
+            font-size: 1rem;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">Mental Models List</h1>
+        </header>
+        <div class="list-container" id="list-container">
+            <!-- Mental models will be dynamically added here -->
+        </div>
+        <footer class="app-footer">
+            <a href="index.html" class="footer-link">Back to Constellation</a>
+        </footer>
+    </div>
+    <script src="src/js/parser.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const parser = new MentalModelParser('src/data/mental-models.md');
+            await parser.parse();
+            const models = parser.getModelsByCategory();
+            const container = document.getElementById('list-container');
+
+            for (const [category, modelList] of Object.entries(models)) {
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.className = 'model-category';
+                categoryTitle.textContent = category;
+                container.appendChild(categoryTitle);
+
+                modelList.forEach(model => {
+                    const modelItem = document.createElement('div');
+                    modelItem.className = 'model-item';
+
+                    const modelName = document.createElement('h3');
+                    modelName.className = 'model-name';
+                    modelName.textContent = model.name;
+                    modelItem.appendChild(modelName);
+
+                    const modelDescription = document.createElement('p');
+                    modelDescription.className = 'model-description';
+                    modelDescription.textContent = model.description;
+                    modelItem.appendChild(modelDescription);
+
+                    container.appendChild(modelItem);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

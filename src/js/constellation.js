@@ -275,6 +275,7 @@ class ConstellationVisualization {
         document.getElementById('camera-down').addEventListener('click', () => this.panCamera(0, -1));
         document.getElementById('camera-left').addEventListener('click', () => this.panCamera(-1, 0));
         document.getElementById('camera-right').addEventListener('click', () => this.panCamera(1, 0));
+        document.getElementById('reset-camera').addEventListener('click', () => this.resetCamera());
     }
 
     /**
@@ -395,10 +396,11 @@ class ConstellationVisualization {
     }
 
     /**
-     * Reset camera to default position
+     * Reset camera to default position and scene rotation
      */
     resetCamera() {
         this.camera.position.set(0, 0, 50);
+        this.scene.rotation.set(0, 0, 0);
         this.controls.targetRotationX = 0;
         this.controls.targetRotationY = 0;
     }
