@@ -157,19 +157,25 @@ class ConstellationVisualization {
      * Create constellations for each category
      */
     createConstellations() {
+        console.log('createConstellations called. Data:', this.data);
+        let totalStarsCreated = 0;
         for (const [category, models] of Object.entries(this.data)) {
             if (this.categoryConfigs[category]) {
-                this.createCategoryConstellation(category, models);
+                const starsInCat = this.createCategoryConstellation(category, models);
+                totalStarsCreated += starsInCat;
             }
         }
+        console.log(`Total stars created across all constellations: ${totalStarsCreated}`);
     }
 
     /**
      * Create constellation for a specific category
      * @param {string} category - Category name
      * @param {Array} models - Array of mental models in this category
+     * @returns {number} Number of stars created in this category
      */
     createCategoryConstellation(category, models) {
+        console.log(`Creating constellation for category: ${category} with ${models.length} models.`);
         const config = this.categoryConfigs[category];
         const constellationGroup = new THREE.Group();
         constellationGroup.userData = { category: category };
@@ -187,9 +193,11 @@ class ConstellationVisualization {
             config.position.y,
             config.position.z
         );
+        console.log(`Constellation group for ${category} positioned at:`, constellationGroup.position);
 
         this.scene.add(constellationGroup);
         this.constellations.set(category, constellationGroup);
+        return models.length;
     }
 
     /**
@@ -223,6 +231,7 @@ class ConstellationVisualization {
             Math.sin(angle) * radius,
             (Math.random() - 0.5) * 8
         );
+        // console.log(`Star ${model.name} positioned at:`, star.position);
 
         // Store model data in star
         star.userData = model;

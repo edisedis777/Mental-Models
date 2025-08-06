@@ -19,31 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Initializing parser...');
             parser = new MentalModelsParser();
             
-            // In a real application, you would fetch this from a file
-            // For now, we'll assume the data is available in a global variable
-            // or we'll fetch it from the markdown file
             const markdownData = await loadMarkdownData();
             const parsedData = parser.parse(markdownData);
             
             console.log('Parsed data:', parsedData);
             console.log('Stats:', parser.getStats());
             
-            // Step 2: Initialize constellation visualization
             console.log('Initializing constellation...');
             constellation = new ConstellationVisualization('constellation-container', parsedData);
             
-            // Step 3: Initialize search manager
             console.log('Initializing search manager...');
             searchManager = new SearchManager(parser, constellation);
             
-            // Store globally for debugging
             window.app = {
                 parser,
                 constellation,
                 searchManager
             };
             
-            // Hide loading indicator
             hideLoading();
             
             console.log('Application initialized successfully!');
@@ -54,13 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Load markdown data from file
-     * In a real implementation, this would fetch from the actual file
-     */
     async function loadMarkdownData() {
         try {
-            // Try to fetch from the actual file first
             const response = await fetch('src/data/mental-models.md');
             if (response.ok) {
                 return await response.text();
@@ -72,9 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return '';
     }
 
-    /**
-     * Hide loading indicator
-     */
     function hideLoading() {
         isLoading = false;
         if (loadingContainer) {
@@ -85,10 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Show error message
-     * @param {string} message - Error message to display
-     */
     function showError(message) {
         hideLoading();
         
@@ -105,11 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(errorDiv);
     }
 
-    /**
-     * Handle keyboard shortcuts
-     */
     function handleKeyboardShortcuts(event) {
-        // Don't handle shortcuts when typing in inputs
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
             return;
         }
@@ -122,10 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 break;
             case 'escape':
-                // Close modal if open
-                const modal = document.getElementById('model-modal');
-                if (modal.classList.contains('show')) {
-                    searchManager.closeModal();
+                const detailsPanel = document.getElementById('details-panel');
+                if (detailsPanel.classList.contains('show')) {
+                    searchManager.hideDetailsPanel();
                 }
                 break;
             case 'r':
@@ -137,20 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Add global keyboard event listeners
-     */
     function addGlobalEventListeners() {
         document.addEventListener('keydown', handleKeyboardShortcuts);
         
-        // Listen for star selection events from constellation
         document.addEventListener('starSelected', (e) => {
             if (searchManager) {
                 searchManager.showModelDetails(e.detail);
             }
         });
 
-        // Handle window resize
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
@@ -161,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 250);
         });
         
-        // Handle visibility change (pause animation when tab is not visible)
         document.addEventListener('visibilitychange', () => {
             if (constellation) {
                 constellation.isRotating = !document.hidden;
@@ -169,11 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Initialize tooltips for better UX
-     */
     function initializeTooltips() {
-        // Add tooltips for UI elements
         const tooltipElements = document.querySelectorAll('[data-tooltip]');
         
         tooltipElements.forEach(element => {
@@ -202,9 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Add some helpful console commands for debugging
-     */
     function addDebugHelpers() {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             console.log('%c🌟 Mental Models Constellation Debug Helpers', 'color: #3498db; font-size: 16px; font-weight: bold;');
@@ -217,13 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Start the application
     initApp().then(() => {
         addGlobalEventListeners();
         initializeTooltips();
         addDebugHelpers();
         
-        // Add a welcome message for first-time users
         if (!localStorage.getItem('constellation-visited')) {
             setTimeout(() => {
                 alert('Welcome to Mental Models Constellation!\n\n' +
@@ -238,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { initApp };
 }
