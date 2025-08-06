@@ -101,7 +101,7 @@ class ConstellationVisualization {
             0.1,
             1000
         );
-        this.camera.position.set(0, 0, 50);
+        this.camera.position.set(0, 0, 100); // Increased Z position
     }
 
     /**
@@ -210,7 +210,7 @@ class ConstellationVisualization {
      */
     createStar(model, config, index, total) {
         // Create star geometry
-        const geometry = new THREE.SphereGeometry(0.8, 16, 16);
+        const geometry = new THREE.SphereGeometry(1.5, 16, 16); // Increased size
         
         // Create material with category color
         const material = new THREE.MeshPhongMaterial({
@@ -237,7 +237,7 @@ class ConstellationVisualization {
         star.userData = model;
 
         // Add glow effect
-        const glowGeometry = new THREE.SphereGeometry(1.2, 16, 16);
+        const glowGeometry = new THREE.SphereGeometry(2.0, 16, 16); // Increased glow size
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: config.color,
             transparent: true,

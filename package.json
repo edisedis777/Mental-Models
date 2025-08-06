@@ -36,10 +36,10 @@
     "three": "^0.128.0"
   },
   "devDependencies": {
-    "live-server": "^1.2.1",
     "eslint": "^7.32.0",
-    "prettier": "^2.4.1",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "live-server": "^1.2.2",
+    "prettier": "^2.4.1"
   },
   "eslintConfig": {
     "env": {
