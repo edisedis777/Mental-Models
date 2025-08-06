@@ -272,14 +272,24 @@ class SearchManager {
     }
 
     /**
-     * Add a model to the history
+     * Add a model to the history, moving it to the top if it already exists.
      */
     addToHistory(model) {
-        this.viewHistory = this.viewHistory.filter(item => item.id !== model.id);
+        // Remove the model from the history if it already exists
+        const existingIndex = this.viewHistory.findIndex(item => item.id === model.id);
+        if (existingIndex > -1) {
+            this.viewHistory.splice(existingIndex, 1);
+        }
+
+        // Add the new model to the beginning of the history
         this.viewHistory.unshift(model);
+
+        // Limit the history to the max number of items
         if (this.viewHistory.length > this.maxHistory) {
             this.viewHistory.pop();
         }
+
+        // Update the UI
         this.updateHistoryUI();
     }
 
