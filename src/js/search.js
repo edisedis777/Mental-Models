@@ -11,9 +11,18 @@ class SearchManager {
         this.searchButton = document.getElementById('search-button');
         this.categoryFiltersContainer = document.getElementById('category-filters');
         this.showAllButton = document.getElementById('show-all-button');
+        this.detailsPanel = document.getElementById('details-panel');
+        this.detailsTitle = document.getElementById('details-title');
+        this.detailsDescription = document.getElementById('details-description');
+        this.detailsCategory = document.getElementById('details-category');
+        this.detailsCategoryContainer = document.getElementById('details-category-container');
+        this.historyList = document.getElementById('history-list');
+        
         this.activeFilters = new Set();
         this.searchTimeout = null;
         this.currentSearchResults = [];
+        this.viewHistory = [];
+        this.maxHistory = 10;
         
         this.init();
     }
@@ -24,7 +33,6 @@ class SearchManager {
     init() {
         this.createCategoryFilters();
         this.addEventListeners();
-        this.addModalCloseListener();
         this.showAllCategories();
     }
 
@@ -48,7 +56,6 @@ class SearchManager {
             label.htmlFor = checkbox.id;
             label.textContent = category;
             
-            // Add category color indicator
             const colorIndicator = document.createElement('span');
             colorIndicator.className = 'color-indicator';
             const config = this.constellation.categoryConfigs[category];
@@ -57,12 +64,9 @@ class SearchManager {
             }
             
             label.appendChild(colorIndicator);
-            
             filterItem.appendChild(checkbox);
             filterItem.appendChild(label);
             this.categoryFiltersContainer.appendChild(filterItem);
-            
-            // Add to active filters
             this.activeFilters.add(category);
         });
     }
@@ -71,7 +75,6 @@ class SearchManager {
      * Add event listeners for search and filters
      */
     addEventListeners() {
-        // Search input with debouncing
         this.searchInput.addEventListener('input', (e) => {
             clearTimeout(this.searchTimeout);
             this.searchTimeout = setTimeout(() => {
@@ -79,32 +82,27 @@ class SearchManager {
             }, 300);
         });
 
-        // Search button
         this.searchButton.addEventListener('click', () => {
             this.handleSearch(this.searchInput.value);
         });
 
-        // Category filter checkboxes
         this.categoryFiltersContainer.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox') {
                 this.handleCategoryFilter(e.target);
             }
         });
 
-        // Show all button
         this.showAllButton.addEventListener('click', () => {
             this.toggleAllCategories();
         });
 
-        // Listen for star selection events from constellation
         document.addEventListener('starSelected', (e) => {
             this.showModelDetails(e.detail);
         });
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.closeModal();
+                this.hideDetailsPanel();
             } else if (e.ctrlKey && e.key === 'f') {
                 e.preventDefault();
                 this.searchInput.focus();
@@ -114,7 +112,6 @@ class SearchManager {
 
     /**
      * Handle search input
-     * @param {string} query - Search query
      */
     handleSearch(query) {
         if (!query.trim()) {
@@ -122,40 +119,28 @@ class SearchManager {
             return;
         }
 
-        // Search for matching models
         const results = this.parser.searchModels(query);
         this.currentSearchResults = results.map(model => model.id);
-        
-        // Highlight results in constellation
         this.constellation.highlightSearchResults(this.currentSearchResults);
-        
-        // Update UI
         this.updateSearchResultsUI(results, query);
     }
 
     /**
      * Handle category filter change
-     * @param {Event} event - Change event
      */
     handleCategoryFilter(target) {
         const category = target.value;
-        const isChecked = target.checked;
-        
-        if (isChecked) {
+        if (target.checked) {
             this.activeFilters.add(category);
         } else {
             this.activeFilters.delete(category);
         }
-        
-        // Update constellation visibility
         this.constellation.filterByCategory(Array.from(this.activeFilters));
-        
-        // Update show all button state
         this.updateShowAllButtonState();
     }
 
     /**
-     * Show all categories
+     * Toggle all categories on or off
      */
     toggleAllCategories() {
         const checkboxes = this.categoryFiltersContainer.querySelectorAll('input[type="checkbox"]');
@@ -185,29 +170,21 @@ class SearchManager {
 
     /**
      * Update search results UI
-     * @param {Array} results - Search results
-     * @param {string} query - Search query
      */
     updateSearchResultsUI(results, query) {
-        // Remove existing results
         this.clearSearchResultsUI();
-        
         if (results.length === 0) {
             this.showNoResultsMessage(query);
             return;
         }
-        
-        // Create results container
+
         const resultsContainer = document.createElement('div');
         resultsContainer.className = 'search-results';
-        
-        // Add results header
         const header = document.createElement('div');
         header.className = 'search-results-header';
         header.textContent = `${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
         resultsContainer.appendChild(header);
-        
-        // Add result items
+
         results.forEach(model => {
             const resultItem = document.createElement('div');
             resultItem.className = 'search-result-item';
@@ -216,16 +193,12 @@ class SearchManager {
                 <div class="result-description">${this.highlightSearchTerm(model.description, query)}</div>
                 <div class="result-category">${model.category}</div>
             `;
-            
-            // Add click handler to focus on the star
             resultItem.addEventListener('click', () => {
                 this.focusOnModel(model.id);
             });
-            
             resultsContainer.appendChild(resultItem);
         });
-        
-        // Insert after search container
+
         const searchContainer = this.searchInput.closest('.search-container');
         searchContainer.parentNode.insertBefore(resultsContainer, searchContainer.nextSibling);
     }
@@ -235,108 +208,103 @@ class SearchManager {
      */
     clearSearchResultsUI() {
         const existingResults = document.querySelector('.search-results');
-        if (existingResults) {
-            existingResults.remove();
-        }
-        
+        if (existingResults) existingResults.remove();
         const noResults = document.querySelector('.no-results');
-        if (noResults) {
-            noResults.remove();
-        }
+        if (noResults) noResults.remove();
     }
 
     /**
      * Show no results message
-     * @param {string} query - Search query
      */
     showNoResultsMessage(query) {
         const noResults = document.createElement('div');
         noResults.className = 'no-results';
         noResults.textContent = `No results found for "${query}"`;
-        
         const searchContainer = this.searchInput.closest('.search-container');
         searchContainer.parentNode.insertBefore(noResults, searchContainer.nextSibling);
     }
 
     /**
      * Highlight search term in text
-     * @param {string} text - Original text
-     * @param {string} term - Search term
-     * @returns {string} Text with highlighted term
      */
     highlightSearchTerm(text, term) {
         if (!term) return text;
-        
         const regex = new RegExp(`(${term})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
     }
 
     /**
      * Focus on a specific model in the constellation
-     * @param {string} modelId - Model ID to focus on
      */
     focusOnModel(modelId) {
         const star = this.constellation.stars.get(modelId);
         if (star) {
-            // Select the star
             this.constellation.selectStar(star);
-            
-            // Show model details
             this.showModelDetails(star.userData);
-            
-            // Clear search
             this.searchInput.value = '';
             this.clearSearchResults();
         }
     }
 
     /**
-     * Show model details in modal
-     * @param {Object} model - Model data
+     * Show model details in the sidebar
      */
     showModelDetails(model) {
-        const modal = document.getElementById('model-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDescription = document.getElementById('modal-description');
-        const modalCategory = document.getElementById('modal-category');
-        
-        modalTitle.textContent = model.name;
-        modalDescription.textContent = model.description;
-        modalCategory.textContent = model.category;
-        
-        // Add category color
+        this.detailsTitle.textContent = model.name;
+        this.detailsDescription.textContent = model.description;
+        this.detailsCategory.textContent = model.category;
+        this.detailsCategoryContainer.style.display = 'block';
+
         const config = this.constellation.categoryConfigs[model.category];
         if (config) {
-            modalCategory.style.color = `#${config.color.toString(16).padStart(6, '0')}`;
+            this.detailsCategory.style.color = `#${config.color.toString(16).padStart(6, '0')}`;
         }
-        
-        modal.style.display = 'block';
-        
-        // Add animation class
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
+
+        this.detailsPanel.classList.add('show');
+        this.addToHistory(model);
     }
 
     /**
-     * Close modal
+     * Hide the details panel
      */
-    closeModal() {
-        const modal = document.getElementById('model-modal');
-        modal.classList.remove('show');
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
+    hideDetailsPanel() {
+        this.detailsPanel.classList.remove('show');
     }
 
     /**
-     * Update show all button state
+     * Add a model to the history
+     */
+    addToHistory(model) {
+        this.viewHistory = this.viewHistory.filter(item => item.id !== model.id);
+        this.viewHistory.unshift(model);
+        if (this.viewHistory.length > this.maxHistory) {
+            this.viewHistory.pop();
+        }
+        this.updateHistoryUI();
+    }
+
+    /**
+     * Update the history UI
+     */
+    updateHistoryUI() {
+        this.historyList.innerHTML = '';
+        this.viewHistory.forEach(model => {
+            const historyItem = document.createElement('li');
+            historyItem.className = 'history-item';
+            historyItem.textContent = model.name;
+            historyItem.addEventListener('click', () => {
+                this.focusOnModel(model.id);
+            });
+            this.historyList.appendChild(historyItem);
+        });
+    }
+
+    /**
+     * Update the state of the 'Show All' button
      */
     updateShowAllButtonState() {
         const totalCategories = this.parser.getCategoryNames().length;
         const activeCount = this.activeFilters.size;
-        
         if (activeCount === totalCategories) {
             this.showAllButton.textContent = 'Hide All';
             this.showAllButton.classList.add('active');
@@ -347,71 +315,18 @@ class SearchManager {
     }
 
     /**
-     * Get active filters
-     * @returns {Array} Array of active filter categories
+     * Show all categories
      */
-    getActiveFilters() {
-        return Array.from(this.activeFilters);
-    }
-
-    /**
-     * Set active filters
-     * @param {Array} filters - Array of category names to filter
-     */
-    setActiveFilters(filters) {
-        this.activeFilters.clear();
-        
+    showAllCategories() {
         const checkboxes = this.categoryFiltersContainer.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
-            const isChecked = filters.includes(checkbox.value);
-            checkbox.checked = isChecked;
-            
-            if (isChecked) {
-                this.activeFilters.add(checkbox.value);
-            }
+            checkbox.checked = true;
+            this.activeFilters.add(checkbox.value);
         });
-        
         this.constellation.filterByCategory(Array.from(this.activeFilters));
         this.updateShowAllButtonState();
     }
-
-    /**
-     * Get current search results
-     * @returns {Array} Array of current search result model IDs
-     */
-    getCurrentSearchResults() {
-        return this.currentSearchResults;
-    }
-
-    /**
-     * Clear all filters and search
-     */
-    clearAll() {
-        this.searchInput.value = '';
-        this.clearSearchResults();
-        this.showAllCategories();
-    }
-
-    /**
-     * Add modal close button event listener
-     */
-    addModalCloseListener() {
-        const modal = document.getElementById('model-modal');
-        const closeBtn = modal.querySelector('.modal-close');
-        
-        closeBtn.addEventListener('click', () => {
-            this.closeModal();
-        });
-        
-        // Close on outside click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                this.closeModal();
-            }
-        });
-    }
 }
-
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
