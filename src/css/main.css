@@ -29,8 +29,9 @@ body {
     padding: 20px;
     background: linear-gradient(180deg, rgba(20, 20, 40, 0.9) 0%, rgba(10, 10, 10, 0.8) 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 100;
+    z-index: 1000; /* Increased z-index */
     position: relative;
+    width: 100%; /* Ensure full width */
 }
 
 .app-header .app-title,
@@ -42,33 +43,38 @@ body {
 @media (max-width: 480px) {
     .app-header {
         padding: 10px 15px; /* Adjusted padding for mobile */
+        justify-content: space-between; /* Keep space-between for mobile */
     }
 }
 
 .menu-button {
     display: none; /* Hidden by default */
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
     background: none;
     border: none;
     color: #ffffff;
     font-size: 24px;
     cursor: pointer;
-    z-index: 1000; /* Increased z-index */
+    z-index: 1000; /* Ensure it's on top */
+    padding: 10px; /* Increased padding for easier tapping */
+    margin-right: 10px; /* Add some space to the right of the button */
 }
-
-
 
 @media (max-width: 480px) {
     .menu-button {
         display: block; /* Show on small screens */
+        order: -1; /* Place it at the beginning of flex items */
+        margin-right: 10px; /* Space between button and title */
     }
 
     .app-header {
-        padding-left: 60px; /* Make space for the button */
-        text-align: center;
+        padding-left: 15px; /* Reset padding-left */
+        justify-content: space-between; /* Keep space-between for mobile */
+    }
+
+    .app-header .app-title,
+    .app-header .app-subtitle {
+        text-align: center; /* Center text within remaining space */
+        margin-left: 0; /* Remove extra margin */
     }
 }
 
