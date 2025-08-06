@@ -23,12 +23,26 @@ body {
 
 /* Header Styles */
 .app-header {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Changed to space-between */
     padding: 20px;
     background: linear-gradient(180deg, rgba(20, 20, 40, 0.9) 0%, rgba(10, 10, 10, 0.8) 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
     position: relative;
+}
+
+.app-header .app-title,
+.app-header .app-subtitle {
+    flex-grow: 1;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        padding: 10px 15px; /* Adjusted padding for mobile */
+    }
 }
 
 .menu-button {
@@ -42,8 +56,10 @@ body {
     color: #ffffff;
     font-size: 24px;
     cursor: pointer;
-    z-index: 110;
+    z-index: 1000; /* Increased z-index */
 }
+
+
 
 @media (max-width: 480px) {
     .menu-button {
