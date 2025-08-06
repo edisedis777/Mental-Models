@@ -290,7 +290,8 @@ class SearchManager {
         // Remove the model from the history if it already exists
         const existingIndex = this.viewHistory.findIndex((item) => item.id === model.id);
         if (existingIndex > -1) {
-            this.viewHistory.splice(existingIndex, 1);
+            // If the model already exists, do not reorder, just return.
+            return;
         }
 
         // Add the new model to the beginning of the history
