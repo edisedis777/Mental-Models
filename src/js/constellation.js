@@ -281,8 +281,11 @@ class ConstellationVisualization {
         this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
         if (this.controls.isMouseDown) {
-            this.controls.targetRotationY += (event.clientX - this.controls.mouseX) * 0.001;
-            this.controls.targetRotationX += (event.clientY - this.controls.mouseY) * 0.001;
+            const deltaX = event.clientX - this.controls.mouseX;
+            const deltaY = event.clientY - this.controls.mouseY;
+
+            this.scene.rotation.y += deltaX * 0.005;
+            this.scene.rotation.x += deltaY * 0.005;
         }
 
         this.controls.mouseX = event.clientX;
@@ -440,12 +443,6 @@ class ConstellationVisualization {
             this.constellations.forEach(constellation => {
                 constellation.rotation.y += this.rotationSpeed;
             });
-        }
-
-        // Apply mouse rotation
-        if (this.controls.isMouseDown) {
-            this.scene.rotation.y += this.controls.targetRotationY;
-            this.scene.rotation.x += this.controls.targetRotationX;
         }
 
         // Render the scene
