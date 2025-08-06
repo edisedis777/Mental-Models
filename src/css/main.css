@@ -486,6 +486,40 @@ mark {
     font-size: 1.1rem;
 }
 
+/* Footer */
+.app-footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(20, 20, 40, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: #95a5a6;
+    z-index: 100;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(20, 20, 40, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: #95a5a6;
+    z-index: 100;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .app-footer p {
     margin-bottom: 10px;
 }
@@ -500,53 +534,4 @@ mark {
     color: #5dade2;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .app-title {
-        font-size: 2rem;
-    }
-    
-    .controls-panel {
-        width: 250px;
-        left: 10px;
-        top: 100px;
-        padding: 15px;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 5% auto;
-    }
-    
-    .modal-header {
-        padding: 20px 20px 10px;
-    }
-    
-    .modal-body {
-        padding: 20px;
-    }
-    
-    .modal-title {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .controls-panel {
-        position: static;
-        width: 100%;
-        max-height: none;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
-    
-    .app-container {
-        height: auto;
-        overflow-y: auto;
-    }
-    
-    .constellation-container {
-        height: 400px;
-    }
-}
+#reset-camera { grid-column: 2; grid-row: 1; }
