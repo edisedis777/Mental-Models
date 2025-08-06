@@ -57,7 +57,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
-    width: 300px;
+    width: 250px;
     max-height: calc(100vh - 140px);
     overflow-y: auto;
     z-index: 50;
@@ -85,11 +85,13 @@ body {
 /* Search Container */
 .search-container {
     margin-bottom: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .search-input {
-    width: 100%;
-    padding: 12px 15px;
+    flex-grow: 1;
+    padding: 10px 12px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 25px;
@@ -110,16 +112,14 @@ body {
 }
 
 .search-button {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     font-size: 16px;
     transition: color 0.3s ease;
+    margin-left: 10px;
+    padding: 0 5px;
 }
 
 .search-button:hover {
