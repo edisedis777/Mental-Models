@@ -152,10 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Handle panel visibility on window resize
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 480) {
-                    controlsPanel.classList.remove('show'); // Remove mobile 'show' class
-                    controlsPanel.classList.remove('hide'); // Ensure it's visible on desktop by default
+                    // If we are on desktop, remove the 'show' class which is for mobile
+                    controlsPanel.classList.remove('show');
                 } else {
-                    controlsPanel.classList.add('hide'); // Hide on mobile by default
+                    // If we are on mobile, remove the 'hide' class which is for desktop
+                    controlsPanel.classList.remove('hide');
                 }
             });
         }

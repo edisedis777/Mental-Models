@@ -94,13 +94,13 @@ body {
     transition: left 0.3s ease-in-out; /* Add transition for smooth sliding */
 }
 
-.controls-panel.hide {
-    left: -270px; /* Hide off-screen (width + padding + border) */
-}
-
 @media (min-width: 481px) { /* For desktop and larger tablets */
     .menu-button {
         order: -1; /* Place it at the beginning of flex items */
+    }
+
+    .controls-panel.hide {
+        left: -270px; /* Hide off-screen (width + padding + border) */
     }
 }
 
