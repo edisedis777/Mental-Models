@@ -48,7 +48,7 @@ body {
 }
 
 .menu-button {
-    display: none; /* Hidden by default */
+    display: block; /* Always show the menu button */
     background: none;
     border: none;
     color: #ffffff;
@@ -60,14 +60,8 @@ body {
 }
 
 @media (max-width: 480px) {
-    .menu-button {
-        display: block; /* Show on small screens */
-        order: -1; /* Place it at the beginning of flex items */
-        margin-right: 10px; /* Space between button and title */
-    }
-
     .app-header {
-        padding-left: 15px; /* Reset padding-left */
+        padding: 10px 15px; /* Adjusted padding for mobile */
         justify-content: space-between; /* Keep space-between for mobile */
     }
 
@@ -77,6 +71,34 @@ body {
         margin-left: 0; /* Remove extra margin */
     }
 }
+
+/* Adjust controls panel for desktop */
+.controls-panel {
+    position: absolute;
+    top: 120px;
+    left: 20px; /* Default position */
+    background: rgba(20, 20, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    transition: left 0.3s ease-in-out; /* Add transition for smooth sliding */
+}
+
+.controls-panel.hide {
+    left: -270px; /* Hide off-screen (width + padding + border) */
+}
+
+@media (min-width: 481px) { /* For desktop and larger tablets */
+    .menu-button {
+        order: -1; /* Place it at the beginning of flex items */
+    }
+}
+
 
 .app-title {
     font-size: 2.5rem;

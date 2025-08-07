@@ -121,18 +121,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const constellationContainer = document.getElementById('constellation-container');
 
         if (menuButton && controlsPanel) {
+            // Initial state: controls panel visible on desktop, hidden on mobile
+            if (window.innerWidth > 480) {
+                controlsPanel.classList.remove('hide');
+            } else {
+                controlsPanel.classList.add('hide');
+            }
+
             menuButton.addEventListener('click', () => {
-                controlsPanel.classList.toggle('show');
-                // Hide details panel if controls panel is shown
-                if (controlsPanel.classList.contains('show')) {
-                    searchManager.hideDetailsPanel();
+                if (window.innerWidth <= 480) {
+                    // Mobile: toggle 'show' class
+                    controlsPanel.classList.toggle('show');
+                    if (controlsPanel.classList.contains('show')) {
+                        searchManager.hideDetailsPanel();
+                    }
+                } else {
+                    // Desktop: toggle 'hide' class
+                    controlsPanel.classList.toggle('hide');
                 }
             });
 
             // Close controls panel when clicking outside on mobile
-            constellationContainer.addEventListener('click', () => {
-                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show')) {
+            constellationContainer.addEventListener('click', (event) => {
+                // Only close if the click is outside the controls panel and it's mobile view
+                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show') && !controlsPanel.contains(event.target) && !menuButton.contains(event.target)) {
                     controlsPanel.classList.remove('show');
+                }
+            });
+
+            // Handle panel visibility on window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 480) {
+                    controlsPanel.classList.remove('show'); // Remove mobile 'show' class
+                    controlsPanel.classList.remove('hide'); // Ensure it's visible on desktop by default
+                } else {
+                    controlsPanel.classList.add('hide'); // Hide on mobile by default
                 }
             });
         }
