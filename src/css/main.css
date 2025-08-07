@@ -789,6 +789,7 @@ mark {
     .search-button {
         padding: 12px;
         font-size: 18px;
+        visibility: hidden;
     }
 
     .show-all-button {
