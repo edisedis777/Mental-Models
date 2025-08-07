@@ -48,7 +48,7 @@ body {
 }
 
 .menu-button {
-    display: block; /* Always show the menu button */
+    display: block; /* Ensure the button is always displayed */
     background: none;
     border: none;
     color: #ffffff;
@@ -69,6 +69,11 @@ body {
     .app-header .app-subtitle {
         text-align: center; /* Center text within remaining space */
         margin-left: 0; /* Remove extra margin */
+    }
+
+    .menu-button {
+        order: -1; /* Place it at the beginning of flex items */
+        margin-right: 10px; /* Space between button and title */
     }
 }
 
