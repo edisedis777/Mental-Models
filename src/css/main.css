@@ -25,7 +25,7 @@ body {
 .app-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Changed to space-between */
     padding: 20px;
     background: linear-gradient(180deg, rgba(20, 20, 40, 0.9) 0%, rgba(10, 10, 10, 0.8) 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -56,8 +56,7 @@ body {
     cursor: pointer;
     z-index: 1000; /* Ensure it's on top */
     padding: 10px; /* Increased padding for easier tapping */
-    position: absolute;
-    left: 20px;
+    margin-right: 10px; /* Add some space to the right of the button */
 }
 
 @media (max-width: 480px) {
@@ -95,9 +94,13 @@ body {
     transition: left 0.3s ease-in-out; /* Add transition for smooth sliding */
 }
 
+.controls-panel.hide {
+    left: -270px; /* Hide off-screen (width + padding + border) */
+}
+
 @media (min-width: 481px) { /* For desktop and larger tablets */
-    .controls-panel.hide {
-        left: -270px; /* Hide off-screen (width + padding + border) */
+    .menu-button {
+        order: -1; /* Place it at the beginning of flex items */
     }
 }
 

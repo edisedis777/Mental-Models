@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const menuButton = document.getElementById('menu-button');
         const controlsPanel = document.querySelector('.controls-panel');
+        const constellationContainer = document.getElementById('constellation-container');
+        const header = document.querySelector('.app-header');
 
         if (menuButton && controlsPanel) {
             // Initial state: controls panel visible on desktop, hidden on mobile
@@ -128,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             menuButton.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent the click from bubbling up to the document
+                event.stopPropagation();
                 if (window.innerWidth <= 480) {
                     // Mobile: toggle 'show' class
                     controlsPanel.classList.toggle('show');
@@ -141,21 +143,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Close controls panel when clicking outside on mobile
-            document.addEventListener('click', (event) => {
-                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show') && !controlsPanel.contains(event.target)) {
+            const closePanel = () => {
+                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show')) {
                     controlsPanel.classList.remove('show');
                 }
-            });
+            };
+
+            // Close controls panel when clicking on the header or constellation
+            header.addEventListener('click', closePanel);
+            constellationContainer.addEventListener('click', closePanel);
 
             // Handle panel visibility on window resize
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 480) {
-                    // If we are on desktop, remove the 'show' class which is for mobile
-                    controlsPanel.classList.remove('show');
+                    controlsPanel.classList.remove('show'); // Remove mobile 'show' class
+                    controlsPanel.classList.remove('hide'); // Ensure it's visible on desktop by default
                 } else {
-                    // If we are on mobile, remove the 'hide' class which is for desktop
-                    controlsPanel.classList.remove('hide');
+                    controlsPanel.classList.add('hide'); // Hide on mobile by default
                 }
             });
         }
