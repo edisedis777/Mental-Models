@@ -18,6 +18,7 @@ class SearchManager {
         this.detailsCategoryContainer = document.getElementById('details-category-container');
         this.historyList = document.getElementById('history-list');
         this.clearHistoryButton = document.getElementById('clear-history-button');
+        this.closeHistoryButton = document.getElementById('close-history-button');
 
         this.activeFilters = new Set();
         this.searchTimeout = null;
@@ -114,6 +115,10 @@ class SearchManager {
 
         this.clearHistoryButton.addEventListener('click', () => {
             this.clearHistory();
+        });
+
+        this.closeHistoryButton.addEventListener('click', () => {
+            this.hideDetailsPanel();
         });
     }
 
@@ -362,6 +367,6 @@ class SearchManager {
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = SearchManager;
-} else {
+} else if (typeof window !== 'undefined') { // Ensure window is defined
     window.SearchManager = SearchManager;
 }
