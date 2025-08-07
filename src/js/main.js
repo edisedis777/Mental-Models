@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const menuButton = document.getElementById('menu-button');
         const controlsPanel = document.querySelector('.controls-panel');
-        const constellationContainer = document.getElementById('constellation-container');
 
         if (menuButton && controlsPanel) {
             // Initial state: controls panel visible on desktop, hidden on mobile
@@ -128,7 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 controlsPanel.classList.add('hide');
             }
 
-            menuButton.addEventListener('click', () => {
+            menuButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the click from bubbling up to the document
                 if (window.innerWidth <= 480) {
                     // Mobile: toggle 'show' class
                     controlsPanel.classList.toggle('show');
@@ -142,9 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Close controls panel when clicking outside on mobile
-            constellationContainer.addEventListener('click', (event) => {
-                // Only close if the click is outside the controls panel and it's mobile view
-                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show') && !controlsPanel.contains(event.target) && !menuButton.contains(event.target)) {
+            document.addEventListener('click', (event) => {
+                if (window.innerWidth <= 480 && controlsPanel.classList.contains('show') && !controlsPanel.contains(event.target)) {
                     controlsPanel.classList.remove('show');
                 }
             });
