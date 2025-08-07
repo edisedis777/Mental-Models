@@ -197,8 +197,9 @@ class ConstellationVisualization {
      * @returns {THREE.Mesh} Star mesh
      */
     createStar(model, config, index, total) {
-        // Create star geometry
-        const geometry = new THREE.SphereGeometry(0.8, 16, 16);
+        // Create star geometry - larger for mobile devices
+        const baseSize = window.innerWidth <= 768 ? 1.2 : 0.8;
+        const geometry = new THREE.SphereGeometry(baseSize, 16, 16);
 
         // Create material with category color
         const material = new THREE.MeshPhongMaterial({
@@ -223,8 +224,9 @@ class ConstellationVisualization {
         // Store model data in star
         star.userData = model;
 
-        // Add glow effect
-        const glowGeometry = new THREE.SphereGeometry(1.2, 16, 16);
+        // Add glow effect - larger for mobile devices
+        const glowSize = window.innerWidth <= 768 ? 2.0 : 1.2;
+        const glowGeometry = new THREE.SphereGeometry(glowSize, 16, 16);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: config.color,
             transparent: true,
@@ -252,6 +254,8 @@ class ConstellationVisualization {
             lastTouchX: 0,
             lastTouchY: 0,
             isTwoFingerTouch: false, // New property to track two-finger touch
+            tapTimeout: null, // New property for tap detection
+            isDragging: false, // New property to differentiate drag from tap
         };
     }
 
@@ -267,7 +271,9 @@ class ConstellationVisualization {
         this.renderer.domElement.addEventListener('wheel', (event) => this.onMouseWheel(event));
 
         // Touch events
-        this.renderer.domElement.addEventListener('touchstart', (event) => this.onTouchStart(event));
+        this.renderer.domElement.addEventListener('touchstart', (event) =>
+            this.onTouchStart(event)
+        );
         this.renderer.domElement.addEventListener('touchmove', (event) => this.onTouchMove(event));
         this.renderer.domElement.addEventListener('touchend', (event) => this.onTouchEnd(event));
 
@@ -326,6 +332,9 @@ class ConstellationVisualization {
             this.controls.mouseY = event.touches[0].clientY;
             this.controls.isMouseDown = true; // Re-using isMouseDown for single touch (rotation)
             this.controls.isTwoFingerTouch = false;
+            // Store the initial touch position for tap detection
+            this.controls.touchStartX = event.touches[0].clientX;
+            this.controls.touchStartY = event.touches[0].clientY;
         } else if (event.touches.length === 2) {
             // Pinch to zoom
             this.controls.touchZoomDistance = this.getTouchDistance(event.touches);
@@ -339,9 +348,20 @@ class ConstellationVisualization {
      */
     onTouchMove(event) {
         event.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
-        if (event.touches.length === 1 && this.controls.isMouseDown && !this.controls.isTwoFingerTouch) {
+
+        // Check if this is a drag movement (more than a small threshold)
+        if (
+            event.touches.length === 1 &&
+            this.controls.isMouseDown &&
+            !this.controls.isTwoFingerTouch
+        ) {
             const deltaX = event.touches[0].clientX - this.controls.mouseX;
             const deltaY = event.touches[0].clientY - this.controls.mouseY;
+
+            // If movement exceeds a threshold, mark as dragging
+            if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                this.controls.isDragging = true;
+            }
 
             this.scene.rotation.y += deltaX * 0.005;
             this.scene.rotation.x += deltaY * 0.005;
@@ -349,10 +369,15 @@ class ConstellationVisualization {
             this.controls.mouseX = event.touches[0].clientX;
             this.controls.mouseY = event.touches[0].clientY;
         } else if (event.touches.length === 2) {
+            // Pinch to zoom
+            this.controls.isDragging = true; // Two-finger touch is always a drag
             const currentTouchDistance = this.getTouchDistance(event.touches);
             const delta = currentTouchDistance - this.controls.touchZoomDistance;
 
-            this.camera.position.z = Math.max(20, Math.min(100, this.camera.position.z - delta * 0.1));
+            this.camera.position.z = Math.max(
+                20,
+                Math.min(100, this.camera.position.z - delta * 0.1)
+            );
             this.controls.touchZoomDistance = currentTouchDistance;
         }
     }
@@ -364,6 +389,46 @@ class ConstellationVisualization {
     onTouchEnd(event) {
         this.controls.isMouseDown = false;
         this.controls.isTwoFingerTouch = false;
+
+        // Handle tap selection for mobile devices
+        if (event.touches.length === 0 && !this.controls.isDragging) {
+            // Use a small timeout to ensure the touch has ended completely
+            setTimeout(() => {
+                this.handleTapSelection();
+            }, 50);
+        }
+
+        // Reset drag state
+        this.controls.isDragging = false;
+    }
+
+    /**
+     * Handle tap selection for mobile devices
+     */
+    handleTapSelection() {
+        // Use the initial touch position for tap detection
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        // Convert touch position to normalized device coordinates (-1 to +1)
+        this.mouse.x = ((this.controls.touchStartX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((this.controls.touchStartY - rect.top) / rect.height) * 2 + 1;
+
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+        if (intersects.length > 0) {
+            const clickedObject = intersects[0].object;
+
+            // Find the star (might be the glow or the actual star)
+            let star = clickedObject;
+            while (star.parent && !star.userData.name) {
+                star = star.parent;
+            }
+
+            // Check if the star and its parent constellation are visible
+            if (star.userData.name && star.parent && star.parent.visible) {
+                this.selectStar(star);
+            }
+        }
     }
 
     /**

@@ -640,10 +640,7 @@ mark {
         padding: 15px;
         transition: left 0.3s ease-in-out;
         overflow-y: auto;
-    }
-
-    .controls-panel.show {
-        left: 0; /* Slide in */
+        z-index: 1001; /* Ensure it's above other elements */
     }
 
     .controls-panel.show {
@@ -654,12 +651,32 @@ mark {
         margin-bottom: 15px;
     }
 
+    .search-input {
+        font-size: 16px; /* Prevent zoom on focus */
+        padding: 12px; /* Larger touch target */
+    }
+
     .filter-container {
         margin-bottom: 15px;
     }
 
+    .filter-item {
+        padding: 12px; /* Larger touch target */
+    }
+
+    .filter-item input[type='checkbox'] {
+        width: 24px; /* Larger checkbox */
+        height: 24px;
+        margin-right: 12px;
+    }
+
     .info-container {
         padding-top: 15px;
+    }
+
+    .info-item {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
     }
 
     .constellation-container {
@@ -672,9 +689,10 @@ mark {
         right: 0;
         top: auto; /* Override top */
         bottom: -100%; /* Hide off-screen */
-        max-height: 60vh; /* Take up 60% of viewport height */
+        max-height: 70vh; /* Take up 70% of viewport height */
         border-radius: 10px 10px 0 0; /* Rounded top corners */
         transition: bottom 0.5s ease;
+        z-index: 1001; /* Ensure it's above other elements */
     }
 
     .details-panel.show {
@@ -682,31 +700,59 @@ mark {
     }
 
     .details-title {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .details-description {
-        font-size: 0.85rem;
+        font-size: 1rem;
+        padding: 0 15px 15px;
+        line-height: 1.5;
     }
 
     .details-category {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
+        padding: 0 15px 15px;
     }
 
     .history-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        padding: 15px 0 10px;
     }
 
     .history-item {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        padding: 12px 15px;
     }
 
     .loading-text {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
     .app-footer {
         padding: 8px;
         font-size: 0.7rem;
+    }
+
+    /* Add touch-friendly button styles */
+    .menu-button {
+        padding: 12px; /* Larger touch target */
+        font-size: 20px;
+    }
+
+    .search-button {
+        padding: 12px;
+        font-size: 18px;
+    }
+
+    .show-all-button {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .clear-history-button {
+        padding: 8px;
+        font-size: 16px;
     }
 }
