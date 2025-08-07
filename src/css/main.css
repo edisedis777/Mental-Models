@@ -694,6 +694,11 @@ mark {
 
     .search-container {
         margin-bottom: 15px;
+        visibility: hidden;
+    }
+
+    .controls-panel.show .search-container {
+        visibility: visible;
     }
 
     .search-input {
